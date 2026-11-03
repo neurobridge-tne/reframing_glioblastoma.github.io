@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Register · Reframing Glioblastoma</title>
+  <meta name="description" content="Register for the workshop Reframing Glioblastoma. Free, in person or online, with optional poster abstract.">
+  <link rel="icon" type="image/png" href="../assets/favicon.png">
+  <link rel="preload" href="../assets/fonts/schibsted-grotesk-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="../assets/style.css">
+</head>
+<body>
+
+<nav class="nav" aria-label="Main">
+  <div class="wrap">
+    <a class="nav__brand" href="../">Reframing Glioblastoma</a>
+    <div class="nav__links">
+      <span class="nav__pill" aria-hidden="true"></span>
+      <a href="../#about">About</a>
+      <a href="../#speakers">Speakers</a>
+      <a href="../#program">Program</a>
+      <a href="../#venue">Venue</a>
+      <a href="../#contact">Contact</a>
+      <a class="nav__cta" href="./" aria-current="page">Register</a>
+    </div>
+  </div>
+</nav>
+
+<header class="page-head">
+  <img class="hero__img" src="../assets/hero-gbm.jpg" alt="" aria-hidden="true">
+  <div class="wrap">
+    <h1>Register</h1>
+    <p>Reframing Glioblastoma: integrating tumor biology, microenvironment and clinical perspectives</p>
+  </div>
+</header>
+
+<main>
+<section>
+  <div class="wrap split">
+    <div>
+      <p class="prose" style="font-size:17px; color:var(--muted)">Registration is free. All fields are required. You'll get a confirmation email as soon as you submit.</p>
+    </div>
+
+    <div>
+      <form class="form" id="reg" novalidate>
+        <fieldset>
+          <legend>About you</legend>
+          <div class="grid2">
+            <div class="field">
+              <label for="firstName">First name</label>
+              <input type="text" id="firstName" name="firstName" autocomplete="given-name" maxlength="80" required aria-describedby="firstName-err">
+              <p class="error" id="firstName-err"></p>
+            </div>
+            <div class="field">
+              <label for="lastName">Last name</label>
+              <input type="text" id="lastName" name="lastName" autocomplete="family-name" maxlength="80" required aria-describedby="lastName-err">
+              <p class="error" id="lastName-err"></p>
+            </div>
+            <div class="field field--full">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" autocomplete="email" maxlength="160" required aria-describedby="email-err">
+              <p class="error" id="email-err"></p>
+            </div>
+            <div class="field field--full">
+              <label for="affiliation">Affiliation</label>
+              <span class="hint" id="affiliation-hint">University or institute, and city</span>
+              <input type="text" id="affiliation" name="affiliation" autocomplete="organization" maxlength="200" required aria-describedby="affiliation-hint affiliation-err">
+              <p class="error" id="affiliation-err"></p>
+            </div>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>How will you attend?</legend>
+          <div class="choices" role="radiogroup" aria-describedby="attendance-err">
+            <label class="choice"><input type="radio" name="attendance" value="In person" required><span><b>In person</b><small>Aula Magna, Sant'Anna School, Pisa</small></span></label>
+            <label class="choice"><input type="radio" name="attendance" value="Online"><span><b>Online</b><small>We'll email you the streaming link</small></span></label>
+          </div>
+          <p class="error" id="attendance-err"></p>
+        </fieldset>
+
+        <fieldset>
+          <legend>Would you like to present a poster?</legend>
+          <div class="choices" role="radiogroup" aria-describedby="poster-err">
+            <label class="choice"><input type="radio" name="poster" value="Yes" required><span><b>Yes</b><small>I'll submit an abstract</small></span></label>
+            <label class="choice"><input type="radio" name="poster" value="No"><span><b>No</b><small>I'll attend only</small></span></label>
+          </div>
+          <p class="error" id="poster-err"></p>
+
+          <div class="field abstract" id="abstract-box" hidden style="margin-top:24px">
+            <label for="abstract">Poster abstract</label>
+            <span class="hint" id="abstract-hint">Plain text, up to 300 words. Include the title on the first line.</span>
+            <textarea id="abstract" name="abstract" maxlength="4000" aria-describedby="abstract-hint abstract-count abstract-err"></textarea>
+            <span class="counter" id="abstract-count" aria-live="polite">0 / 300 words</span>
+            <p class="error" id="abstract-err"></p>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <label class="consent">
+            <input type="checkbox" name="consent" id="consent" required aria-describedby="consent-err">
+            <span>I agree that the organizers store these details to manage the workshop and contact me about it. They won't be shared or used for anything else.</span>
+          </label>
+          <p class="error" id="consent-err" style="margin-left:34px"></p>
+        </fieldset>
+
+        <!-- spam trap: real people never see or fill this -->
+        <div class="hp" aria-hidden="true"><label>Website <input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+
+        <div class="submit-row">
+          <button class="btn" type="submit" id="submit">Register</button>
+          <p class="form-status" id="status" role="status" aria-live="polite"></p>
+        </div>
+      </form>
+
+      <div class="done" id="done" hidden tabindex="-1">
+        <h2>You're registered</h2>
+        <p>We've sent a confirmation to <b id="done-email"></b>. If it isn't in your inbox within a few minutes, check your spam folder.</p>
+        <p><a href="../">Back to the workshop page</a></p>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <div>
+      <p>Funded by PNRR TNE 23-0034 NeuroBridge.</p>
+      <p>Questions? Write to <a href="mailto:gabriele.coluccia@santannapisa.it">gabriele.coluccia@santannapisa.it</a></p>
+    </div>
+    <img class="sponsor" src="../assets/pnrr.png" alt="Funded by the European Union NextGenerationEU, Italian Ministry of University and Research, Italia Domani PNRR">
+  </div>
+</footer>
+
+<script src="../assets/site.js"></script>
+<script src="../assets/register.js"></script>
+</body>
+</html>
