@@ -3,9 +3,11 @@
    Google Sheet and emails the confirmation. Setup: see SETUP-REGISTRATION.md */
 
 // Paste here the Web app URL you get when you deploy the script (ends with /exec)
-const ENDPOINT = "";
+const ENDPOINT = "https://script.google.com/macros/s/AKfycbzBUDYA7tH6kMVxJnwS8lOMnXyMKr1i4kTwBvW6uFTcOOH1ZDho_2dYLBUdlweIZjyA_w/exec";
 
 const MAX_WORDS = 300;
+const MIN_SECONDS = 4;            // must match MIN_SECONDS in Code.gs
+const openedAt = Date.now();
 
 (function () {
   const form = document.getElementById("reg");
@@ -85,7 +87,15 @@ const MAX_WORDS = 300;
       poster: form.poster.value,
       abstract: form.poster.value === "Yes" ? abstract.value.trim() : "",
       website: form.website.value,   // spam trap
+      elapsed: Date.now() - openedAt,
     };
+
+    // A person can't fill this in a few seconds; a bot can.
+    if (data.elapsed < MIN_SECONDS * 1000) {
+      status.textContent = "Please check your details, then press Register again.";
+      status.classList.add("is-error");
+      return;
+    }
 
     if (!ENDPOINT) {
       status.textContent = "Registration isn't connected yet: the organizers still need to add the form address.";
@@ -98,14 +108,21 @@ const MAX_WORDS = 300;
       // text/plain keeps this a "simple" request, which Apps Script accepts cross-origin
       const res = await fetch(ENDPOINT, { method: "POST", body: JSON.stringify(data) });
       const out = await res.json();
-      if (!out.ok) throw new Error(out.error || "rejected");
+      if (!out.ok) {
+        const e = new Error(out.error || "rejected"); e.code = out.error; throw e;
+      }
       $("done-email").textContent = data.email;
       form.hidden = true;
       $("done").hidden = false;
       $("done").focus();
       window.scrollTo({ top: $("done").getBoundingClientRect().top + window.scrollY - 120 });
     } catch (err) {
-      status.textContent = "Your registration didn't go through. Check your connection and try again. If it keeps failing, email gabriele.coluccia@santannapisa.it.";
+      const msgs = {
+        limit: "This email has already been used for 2 registrations. To change your details, write to gabriele.coluccia@santannapisa.it.",
+        too_fast: "Please check your details, then press Register again.",
+      };
+      status.textContent = msgs[err.code] || "Your registration didn't go through. Check your connection and try again. If it keeps failing, email gabriele.coluccia@santannapisa.it.";
+      if (err.code === "limit") setError("email", "Already used for 2 registrations.");
       status.classList.add("is-error");
       submit.disabled = false; submit.textContent = "Register";
     }
