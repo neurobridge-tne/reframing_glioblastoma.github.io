@@ -37,8 +37,13 @@ e deve arrivarti la conferma.
   L'URL resta lo stesso.
 - **Limiti di invio di Google**: circa 100 email al giorno con un account Gmail gratuito,
   circa 1.500 con Google Workspace. Per un workshop di solito basta.
-- **Doppie iscrizioni**: se la stessa email si registra due volte, la colonna
-  "Already registered?" segna "Yes". Non viene bloccata, così chi ha sbagliato un dato può reinviare.
+- **Doppie iscrizioni**: con la stessa email si può registrare al massimo 2 volte
+  (`MAX_PER_EMAIL` in `Code.gs`), così chi ha sbagliato un dato può reinviare.
+  La seconda riga ha "Yes" nella colonna "Already registered?". Dalla terza il modulo
+  risponde che l'email è già stata usata.
+- **Anti-bot**: oltre al campo trappola nascosto, vengono rifiutati gli invii fatti meno di
+  4 secondi dopo l'apertura della pagina (`MIN_SECONDS`, uguale in `Code.gs` e in `assets/register.js`).
+  A una persona, se succede, compare solo "controlla i dati e premi di nuovo Register".
 - **Chiudere le iscrizioni**: svuota `ENDPOINT` in `register.js`, oppure archivia il deployment.
 - **Privacy**: il modulo chiede il consenso al trattamento. Se l'ente ha un'informativa privacy,
   aggiungi il link nel testo della casella in `registration/index.html`.

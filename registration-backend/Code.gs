@@ -9,13 +9,15 @@
 // ---- Settings -------------------------------------------------------------
 const EVENT_NAME      = 'Reframing Glioblastoma';
 const EVENT_SUBTITLE  = 'Integrating Tumor Biology, Microenvironment and Clinical Perspectives';
-const EVENT_DATE      = 'Date to be announced';              // e.g. 'Thursday 14 May 2026'
-const EVENT_PLACE     = "Aula Magna, Sant'Anna School of Advanced Studies, Pisa";
+const EVENT_DATE      = 'Thursday 18 February 2027';
+const EVENT_PLACE     = 'CNR Research Area of Pisa, Via Giuseppe Moruzzi 1, Pisa';
 const SITE_URL        = 'https://YOUR-SITE-ADDRESS/';        // shown in the email
-const CONTACT_EMAIL   = 'gabriele.coluccia@santannapisa.it'; // replies go here
+const CONTACT_EMAIL   = 'EMAIL1';   // replies to the confirmation email go here (one address)
 const ORGANIZER_COPY  = '';  // optional: an address that gets a copy of every registration
 const SHEET_NAME      = 'Registrations';
 const MAX_WORDS       = 300;
+const MAX_PER_EMAIL   = 2;     // registrations allowed with the same email
+const MIN_SECONDS     = 4;     // faster than this from page load = bot
 // ---------------------------------------------------------------------------
 
 const HEADERS = ['Submitted at', 'First name', 'Last name', 'Email', 'Affiliation',
@@ -25,6 +27,7 @@ function doPost(e) {
   try {
     const d = JSON.parse(e.postData.contents);
     if (d.website) return reply({ ok: true });          // spam trap filled: pretend it worked
+    if (!(Number(d.elapsed) >= MIN_SECONDS * 1000)) return reply({ ok: false, error: 'too_fast' });
 
     const clean = {
       firstName:   text(d.firstName, 80),
@@ -43,7 +46,9 @@ function doPost(e) {
     try {
       const sheet = getSheet();
       const emails = sheet.getLastRow() > 1 ? sheet.getRange(2, 4, sheet.getLastRow() - 1, 1).getValues().flat() : [];
-      const duplicate = emails.indexOf(clean.email) !== -1 ? 'Yes' : '';
+      const previous = emails.filter(function (m) { return String(m).toLowerCase() === clean.email; }).length;
+      if (previous >= MAX_PER_EMAIL) return reply({ ok: false, error: 'limit' });
+      const duplicate = previous > 0 ? 'Yes' : '';
       sheet.appendRow([new Date(), clean.firstName, clean.lastName, clean.email, clean.affiliation,
                        clean.attendance, clean.poster, clean.abstract, words(clean.abstract), duplicate].map(safeCell));
     } finally {
