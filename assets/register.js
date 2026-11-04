@@ -3,7 +3,7 @@
    Google Sheet and emails the confirmation. Setup: see SETUP-REGISTRATION.md */
 
 // Paste here the Web app URL you get when you deploy the script (ends with /exec)
-const ENDPOINT = "https://script.google.com/macros/s/AKfycbzBUDYA7tH6kMVxJnwS8lOMnXyMKr1i4kTwBvW6uFTcOOH1ZDho_2dYLBUdlweIZjyA_w/exec";
+const ENDPOINT = "";
 
 const MAX_WORDS = 300;
 const MIN_SECONDS = 4;            // must match MIN_SECONDS in Code.gs
@@ -112,16 +112,19 @@ const openedAt = Date.now();
         const e = new Error(out.error || "rejected"); e.code = out.error; throw e;
       }
       $("done-email").textContent = data.email;
+      if (out.emailSent === false) {
+        $("done-msg").textContent = "Your registration is saved, but we couldn't send the confirmation email. You don't need to register again: the organizers will contact you.";
+      }
       form.hidden = true;
       $("done").hidden = false;
       $("done").focus();
       window.scrollTo({ top: $("done").getBoundingClientRect().top + window.scrollY - 120 });
     } catch (err) {
       const msgs = {
-        limit: "This email has already been used for 2 registrations. To change your details, write to gabriele.coluccia@santannapisa.it.",
+        limit: "This email has already been used for 2 registrations. To change your details, email the organizing committee (link at the bottom of the page).",
         too_fast: "Please check your details, then press Register again.",
       };
-      status.textContent = msgs[err.code] || "Your registration didn't go through. Check your connection and try again. If it keeps failing, email gabriele.coluccia@santannapisa.it.";
+      status.textContent = msgs[err.code] || "Your registration didn't go through. Check your connection and try again. If it keeps failing, email the organizing committee (link at the bottom of the page).";
       if (err.code === "limit") setError("email", "Already used for 2 registrations.");
       status.classList.add("is-error");
       submit.disabled = false; submit.textContent = "Register";
