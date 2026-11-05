@@ -155,7 +155,7 @@ a:hover { color: var(--cyan); }
 .btn--ghost:hover { background: var(--indigo); color: var(--white); }
 
 /* ---------- Sections ---------- */
-section { padding: clamp(64px, 10vw, 120px) 0; border-bottom: 1px solid var(--rule); }
+section { padding: clamp(56px, 8vw, 96px) 0; border-bottom: 1px solid var(--rule); }
 section:last-of-type { border-bottom: 0; }
 
 .section-head {
@@ -177,8 +177,9 @@ h2 {
 .about-row { display: grid; grid-template-columns: 260px 1fr; gap: 32px; padding: 24px 0 8px; border-top: 1px solid var(--rule); }
 .about-row h3 { font-size: 18px; margin: 0; font-weight: 600; }
 .about-row p { font-family: var(--serif); font-size: 19px; line-height: 1.6; margin: 0 0 1em; max-width: 36em; }
-.about-row ul { list-style: none; padding: 0; margin: 0; columns: 2; column-gap: 32px; max-width: 36em; }
-.about-row li { padding: 2px 0; break-inside: avoid; }
+/* committee: names on one line, wrapping only when needed */
+.about-row ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; gap: 4px 28px; }
+.about-row li { padding: 0; }
 .about-row li small { color: var(--muted); font-size: 14px; }
 
 /* ---------- Speakers ---------- */
@@ -208,8 +209,9 @@ h2 {
   padding: 28px 0;
   border-top: 1px solid var(--rule);
 }
-.slot time { font-weight: 600; font-size: 17px; padding-top: 2px; }
-.slot time small { display: block; font-weight: 400; color: var(--muted); font-size: 15px; }
+/* time range always on one line, same look for talks and breaks */
+.slot time { font-weight: 600; font-size: 17px; padding-top: 2px; white-space: nowrap; }
+.slot time small { font: inherit; color: inherit; }
 .slot img { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; filter: grayscale(1); }
 .slot h3 { margin: 0 0 6px; font-size: 21px; line-height: 1.3; font-weight: 600; letter-spacing: -0.01em; max-width: 38em; }
 .slot .who { margin: 0; color: var(--muted); }
@@ -231,7 +233,7 @@ h2 {
 
 .slot--break { padding: 16px 0; background: transparent; }
 .slot--break h3 { font-size: 17px; font-weight: 500; color: var(--muted); margin: 0; }
-.slot--break time { color: var(--muted); font-weight: 500; }
+.slot--break time { color: var(--muted); font-weight: 500; padding-top: 0; }
 .slot--break .dot { width: 64px; }
 
 .program-note { color: var(--muted); font-size: 15px; margin-top: 24px; }
@@ -265,6 +267,8 @@ footer a:hover { color: #9ED3E6; }
 
 /* ---------- Responsive ---------- */
 @media (max-width: 900px) {
+  .nav__brand { display: none; }
+  .nav__links { margin-left: -8px; }
   .section-head, .about-row, .split { grid-template-columns: 1fr; gap: 12px; }
   .facts { grid-template-columns: 1fr 1fr; gap: 16px 24px; }
   .facts .btn { justify-self: start; grid-column: 1 / -1; }
@@ -288,13 +292,12 @@ footer a:hover { color: #9ED3E6; }
   .hero h1 { margin-bottom: 28px; }
   .slot { grid-template-columns: 52px 1fr; gap: 4px 16px; }
   .slot time { grid-column: 1 / -1; margin-bottom: 8px; }
-  .slot time small { display: inline; margin-left: 6px; }
   .slot img { width: 52px; height: 52px; }
   .slot--break { grid-template-columns: 1fr; }
   .slot--break .dot { display: none; }
   .slot--break time { margin-bottom: 0; }
   .slot h3 { font-size: 18px; }
-  .about-row ul { columns: 1; }
+  .about-row ul { gap: 2px 20px; }
   .venue li { grid-template-columns: 1fr; gap: 2px; }
   .speakers { grid-template-columns: 1fr; gap: 20px; }
   .speakers a, .speakers li > div { grid-template-columns: 72px 1fr; gap: 0 16px; }
@@ -395,3 +398,16 @@ footer a:hover { color: #9ED3E6; }
 }
 /* the About row can hold several paragraphs */
 .about-row > div p:last-child { margin-bottom: 0.6em; }
+
+/* About ends with a short list: less empty space before Speakers */
+#about { padding-bottom: clamp(36px, 5vw, 56px); }
+.about-row:last-child { padding-bottom: 0; }
+
+/* narrow phones: drop About from the menu so Register always fits */
+@media (max-width: 430px) {
+  .nav__links a { padding: 6px 7px; }
+  .nav__links a[href$="#about"] { display: none; }
+}
+@media (max-width: 370px) {
+  .nav__links a { padding: 6px 5px; font-size: 13.5px; }
+}
