@@ -21,7 +21,7 @@ const MIN_SECONDS     = 4;     // faster than this from page load = bot
 // ---------------------------------------------------------------------------
 
 const HEADERS = ['Submitted at', 'First name', 'Last name', 'Email', 'Affiliation',
-                 'Attendance', 'Poster', 'Abstract', 'Abstract words', 'Already registered?'];
+                 'Attendance', 'Poster', 'Abstract', 'Abstract words', 'Already registered?', 'Confirmation email'];
 
 function doPost(e) {
   try {
@@ -41,6 +41,7 @@ function doPost(e) {
     const error = validate(clean);
     if (error) return reply({ ok: false, error: error });
 
+    let row;
     const lock = LockService.getScriptLock();
     lock.waitLock(15000);
     try {
@@ -51,16 +52,27 @@ function doPost(e) {
       const duplicate = previous > 0 ? 'Yes' : '';
       sheet.appendRow([new Date(), clean.firstName, clean.lastName, clean.email, clean.affiliation,
                        clean.attendance, clean.poster, clean.abstract, words(clean.abstract), duplicate].map(safeCell));
+      row = sheet.getLastRow();
     } finally {
       lock.releaseLock();
     }
 
-    sendConfirmation(clean);
-    if (ORGANIZER_COPY) {
-      MailApp.sendEmail(ORGANIZER_COPY, 'New registration: ' + clean.firstName + ' ' + clean.lastName,
-                        summaryText(clean));
+    // The registration is saved at this point. If an email fails, the participant
+    // is still registered: we note it in the sheet instead of reporting an error.
+    let emailSent = true;
+    try {
+      sendConfirmation(clean);
+    } catch (mailErr) {
+      emailSent = false;
+      console.error('Confirmation email failed: ' + mailErr);
     }
-    return reply({ ok: true });
+    getSheet().getRange(row, HEADERS.length).setValue(emailSent ? 'Sent' : 'NOT sent: check the email permission');
+    if (ORGANIZER_COPY) {
+      try {
+        MailApp.sendEmail(ORGANIZER_COPY, 'New registration: ' + clean.firstName + ' ' + clean.lastName, summaryText(clean));
+      } catch (copyErr) { console.error('Organizer copy failed: ' + copyErr); }
+    }
+    return reply({ ok: true, emailSent: emailSent });
   } catch (err) {
     console.error(err);
     return reply({ ok: false, error: 'server' });
@@ -97,6 +109,9 @@ function getSheet() {
     sheet.appendRow(HEADERS);
     sheet.setFrozenRows(1);
     sheet.getRange(1, 1, 1, HEADERS.length).setFontWeight('bold');
+  } else if (!sheet.getRange(1, HEADERS.length).getValue()) {
+    // sheet made by an older version of this script: add the new column title
+    sheet.getRange(1, HEADERS.length).setValue(HEADERS[HEADERS.length - 1]).setFontWeight('bold');
   }
   return sheet;
 }
@@ -158,6 +173,17 @@ function sendConfirmation(c) {
     body: plain,
     htmlBody: html,
     name: EVENT_NAME,
-    replyTo: CONTACT_EMAIL,
+    replyTo: /@/.test(CONTACT_EMAIL) ? CONTACT_EMAIL : undefined,
   });
+}
+
+/**
+ * Run this once from the editor (select testEmail, then Run) to grant the
+ * permission to send emails, or to check that sending works.
+ * The test email goes to your own address.
+ */
+function testEmail() {
+  const me = Session.getEffectiveUser().getEmail();
+  MailApp.sendEmail(me, 'Test: ' + EVENT_NAME + ' registration emails', 'Sending works. Remaining quota today: ' + MailApp.getRemainingDailyQuota());
+  console.log('Test email sent to ' + me);
 }

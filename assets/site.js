@@ -46,3 +46,4 @@
   window.addEventListener("resize", () => place(current, true));
   if (document.fonts) document.fonts.ready.then(() => place(current, true));
 })();
+
