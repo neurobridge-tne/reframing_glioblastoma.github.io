@@ -100,17 +100,19 @@
 </section>
 
 <!-- ============ PROGRAM ============
-     Draft schedule. For a confirmed talk use:
-      <li class="slot" id="talk-surname">
-        <time>09:45 <small>– 10:20</small></time>
-        <img src="assets/speakers/surname.jpg" alt="" loading="lazy">   (or <span class="initials" aria-hidden="true">NS</span> without a photo)
-        <div>
-          <h3>Talk title</h3>
-          <p class="who"><b>Name Surname</b>, University, Country</p>
+     Each row is an <li>.
+     A confirmed talk:
+      <li class="slot" id="talk-surname" data-start="10:30" data-end="10:55" data-kind="talk">
+        <time>10:30 – 10:55</time><span class="node"></span>
+        <div class="slot__body">
+          <p class="speaker">Name Surname <span class="aff">University, City</span></p>
+          <h3 class="title">Talk title</h3>
           <details><summary>Abstract</summary><p>Abstract text.</p></details>
         </div>
       </li>
-     A break is a <li class="slot slot--break">. -->
+     Without a title yet use: <p class="title title--tba">Title to be announced</p>
+     A break: class="slot slot--break" and data-kind="break" (or "poster").
+     A session heading: <li class="session">…</li> -->
 <section id="program">
   <div class="wrap">
     <div class="section-head">
@@ -120,130 +122,134 @@
 
     <ol class="program">
 
-      <li class="slot slot--break">
-        <time>09:30 – 10:20</time><span class="dot"></span>
-        <h3>Registration and poster set-up</h3>
+      <li class="slot slot--break" data-start="09:30" data-end="10:20" data-kind="break">
+        <time>09:30 – 10:20</time><span class="node"></span>
+        <div class="slot__body"><p>Registration and poster set-up</p></div>
       </li>
 
-      <li class="slot slot--break">
-        <time>10:20 – 10:30</time><span class="dot"></span>
-        <h3>Opening, Nicolò Meneghetti and Eleonora Vannini</h3>
+      <li class="slot slot--break" data-start="10:20" data-end="10:30" data-kind="break">
+        <time>10:20 – 10:30</time><span class="node"></span>
+        <div class="slot__body"><p>Opening, Nicolò Meneghetti and Eleonora Vannini</p></div>
       </li>
 
-      <li class="slot" id="talk-kawauchi">
-        <time>10:30 <small>– 10:55</small></time>
-        <span class="initials" aria-hidden="true">DK</span>
-        <div>
-          <h3 class="tba">Talk title to be announced</h3>
-          <p class="who"><b>Daisuke Kawauchi</b></p>
+      <li class="session" aria-hidden="false">
+        <span></span><span class="node"></span>
+        <h3>Morning session <small>10:30 – 12:25</small></h3>
+      </li>
+
+      <li class="slot" id="talk-kawauchi" data-start="10:30" data-end="10:55" data-kind="talk">
+        <time>10:30 – 10:55</time><span class="node"></span>
+        <div class="slot__body">
+          <p class="speaker">Daisuke Kawauchi</p>
+          <p class="title title--tba">Title to be announced</p>
         </div>
       </li>
 
-      <li class="slot" id="talk-scalera">
-        <time>10:55 <small>– 11:20</small></time>
-        <span class="initials" aria-hidden="true">MS</span>
-        <div>
-          <h3 class="tba">Talk title to be announced</h3>
-          <p class="who"><b>Marta Scalera</b></p>
+      <li class="slot" id="talk-scalera" data-start="10:55" data-end="11:20" data-kind="talk">
+        <time>10:55 – 11:20</time><span class="node"></span>
+        <div class="slot__body">
+          <p class="speaker">Marta Scalera</p>
+          <p class="title title--tba">Title to be announced</p>
         </div>
       </li>
 
-      <li class="slot" id="talk-garofalo">
-        <time>11:20 <small>– 11:35</small></time>
-        <span class="initials" aria-hidden="true">SG</span>
-        <div>
-          <h3 class="tba">Talk title to be announced</h3>
-          <p class="who"><b>Stefano Garofalo</b></p>
+      <li class="slot" id="talk-garofalo" data-start="11:20" data-end="11:35" data-kind="talk">
+        <time>11:20 – 11:35</time><span class="node"></span>
+        <div class="slot__body">
+          <p class="speaker">Stefano Garofalo</p>
+          <p class="title title--tba">Title to be announced</p>
         </div>
       </li>
 
-      <li class="slot" id="talk-stanzani">
-        <time>11:35 <small>– 12:00</small></time>
-        <span class="initials" aria-hidden="true">ES</span>
-        <div>
-          <h3 class="tba">Talk title to be announced</h3>
-          <p class="who"><b>Elisabetta Stanzani</b></p>
+      <li class="slot" id="talk-stanzani" data-start="11:35" data-end="12:00" data-kind="talk">
+        <time>11:35 – 12:00</time><span class="node"></span>
+        <div class="slot__body">
+          <p class="speaker">Elisabetta Stanzani</p>
+          <p class="title title--tba">Title to be announced</p>
         </div>
       </li>
 
-      <li class="slot">
-        <time>12:00 <small>– 12:25</small></time>
-        <span class="tba-photo"></span>
-        <div>
-          <h3 class="tba">Speaker to be announced</h3>
+      <li class="slot slot--tba" data-start="12:00" data-end="12:25" data-kind="tba">
+        <time>12:00 – 12:25</time><span class="node"></span>
+        <div class="slot__body">
+          <p class="speaker">Speaker to be announced</p>
         </div>
       </li>
 
-      <li class="slot slot--break">
-        <time>12:25 – 13:15</time><span class="dot"></span>
-        <h3>Lunch</h3>
+      <li class="slot slot--break" data-start="12:25" data-end="13:15" data-kind="break">
+        <time>12:25 – 13:15</time><span class="node"></span>
+        <div class="slot__body"><p>Lunch</p></div>
       </li>
 
-      <li class="slot slot--break">
-        <time>13:15 – 14:15</time><span class="dot"></span>
-        <h3>Poster session</h3>
+      <li class="slot slot--break" data-start="13:15" data-end="14:15" data-kind="poster">
+        <time>13:15 – 14:15</time><span class="node"></span>
+        <div class="slot__body"><p>Poster session</p></div>
       </li>
 
-      <li class="slot" id="talk-gargiulo">
-        <time>14:15 <small>– 14:40</small></time>
-        <span class="initials" aria-hidden="true">GG</span>
-        <div>
-          <h3 class="tba">Talk title to be announced</h3>
-          <p class="who"><b>Gaetano Gargiulo</b></p>
+      <li class="session" aria-hidden="false">
+        <span></span><span class="node"></span>
+        <h3>Afternoon session <small>14:15 – 15:55</small></h3>
+      </li>
+
+      <li class="slot" id="talk-gargiulo" data-start="14:15" data-end="14:40" data-kind="talk">
+        <time>14:15 – 14:40</time><span class="node"></span>
+        <div class="slot__body">
+          <p class="speaker">Gaetano Gargiulo</p>
+          <p class="title title--tba">Title to be announced</p>
         </div>
       </li>
 
-      <li class="slot">
-        <time>14:40 <small>– 15:05</small></time>
-        <span class="tba-photo"></span>
-        <div>
-          <h3 class="tba">Speaker to be announced</h3>
+      <li class="slot slot--tba" data-start="14:40" data-end="15:05" data-kind="tba">
+        <time>14:40 – 15:05</time><span class="node"></span>
+        <div class="slot__body">
+          <p class="speaker">Speaker to be announced</p>
         </div>
       </li>
 
-      <li class="slot" id="talk-seano">
-        <time>15:05 <small>– 15:30</small></time>
-        <span class="initials" aria-hidden="true">GS</span>
-        <div>
-          <h3 class="tba">Talk title to be announced</h3>
-          <p class="who"><b>Giorgio Seano</b></p>
+      <li class="slot" id="talk-seano" data-start="15:05" data-end="15:30" data-kind="talk">
+        <time>15:05 – 15:30</time><span class="node"></span>
+        <div class="slot__body">
+          <p class="speaker">Giorgio Seano</p>
+          <p class="title title--tba">Title to be announced</p>
         </div>
       </li>
 
-      <li class="slot">
-        <time>15:30 <small>– 15:55</small></time>
-        <span class="tba-photo"></span>
-        <div>
-          <h3 class="tba">Speaker to be announced</h3>
+      <li class="slot slot--tba" data-start="15:30" data-end="15:55" data-kind="tba">
+        <time>15:30 – 15:55</time><span class="node"></span>
+        <div class="slot__body">
+          <p class="speaker">Speaker to be announced</p>
         </div>
       </li>
 
-      <li class="slot slot--break">
-        <time>15:55 – 16:25</time><span class="dot"></span>
-        <h3>Coffee break</h3>
+      <li class="slot slot--break" data-start="15:55" data-end="16:25" data-kind="break">
+        <time>15:55 – 16:25</time><span class="node"></span>
+        <div class="slot__body"><p>Coffee break</p></div>
       </li>
 
-      <li class="slot" id="talk-bastiancich">
-        <time>16:30 <small>– 16:50</small></time>
-        <span class="initials" aria-hidden="true">CB</span>
-        <div>
-          <h3>Advancing local glioblastoma therapies through targeting of the post-surgical margins</h3>
-          <p class="who"><b>Chiara Bastiancich</b></p>
+      <li class="session" aria-hidden="false">
+        <span></span><span class="node"></span>
+        <h3>Closing session <small>16:30 – 17:20</small></h3>
+      </li>
+
+      <li class="slot" id="talk-bastiancich" data-start="16:30" data-end="16:50" data-kind="talk">
+        <time>16:30 – 16:50</time><span class="node"></span>
+        <div class="slot__body">
+          <p class="speaker">Chiara Bastiancich</p>
+          <h3 class="title">Advancing local glioblastoma therapies through targeting of the post-surgical margins</h3>
         </div>
       </li>
 
-      <li class="slot" id="talk-di-stefano">
-        <time>16:50 <small>– 17:15</small></time>
-        <span class="initials" aria-hidden="true">AD</span>
-        <div>
-          <h3 class="tba">Talk title to be announced</h3>
-          <p class="who"><b>Anna Luisa Di Stefano</b></p>
+      <li class="slot" id="talk-di-stefano" data-start="16:50" data-end="17:15" data-kind="talk">
+        <time>16:50 – 17:15</time><span class="node"></span>
+        <div class="slot__body">
+          <p class="speaker">Anna Luisa Di Stefano</p>
+          <p class="title title--tba">Title to be announced</p>
         </div>
       </li>
 
-      <li class="slot slot--break">
-        <time>17:15 – 17:20</time><span class="dot"></span>
-        <h3>Concluding remarks</h3>
+      <li class="slot slot--break" data-start="17:15" data-end="17:20" data-kind="break">
+        <time>17:15 – 17:20</time><span class="node"></span>
+        <div class="slot__body"><p>Concluding remarks</p></div>
       </li>
     </ol>
   </div>
