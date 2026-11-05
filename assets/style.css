@@ -467,3 +467,20 @@ footer a:hover { color: #9ED3E6; }
   .slot__body > .initials { font-size: 15px; }
   .slot:not(.slot--break) .slot__body { gap: 12px; }
 }
+
+/* ---------- Program: dot and time aligned with the speaker's photo ---------- */
+/* photo 52px -> centre at 27px from the top of the row content */
+.slot:not(.slot--break):not(.slot--tba) time { padding-top: 15px; }
+.slot:not(.slot--break):not(.slot--tba) .node::after { top: 21px; }
+/* "to be announced" rows: 40px placeholder -> centre at 20px */
+.slot--tba .slot__body > .tba-photo { margin: 0 6px; }
+.slot--tba time { padding-top: 8px; }
+.slot--tba .node::after { top: 14px; }
+
+@media (max-width: 640px) {
+  /* time sits above; the dot lines up with the photo below it (44px -> centre 22px) */
+  .slot:not(.slot--break) .node { grid-row: 2; }
+  .slot:not(.slot--break):not(.slot--tba) time,
+  .slot--tba time { padding-top: 0; }
+  .slot:not(.slot--break):not(.slot--tba) .node::after { top: 16px; }
+}
