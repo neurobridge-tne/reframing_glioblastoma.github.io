@@ -21,7 +21,7 @@ const openedAt = Date.now();
 
   function updateCounter() {
     const n = words(abstract.value);
-    counter.textContent = `${n} ${n === 1 ? "word" : "words"} (${MIN_WORDS}–${MAX_WORDS})`;
+    counter.textContent = `${n} / ${MAX_WORDS} words`;
     counter.classList.toggle("is-over", n > MAX_WORDS);
   }
   abstract.addEventListener("input", () => { updateCounter(); clear("abstract"); });
