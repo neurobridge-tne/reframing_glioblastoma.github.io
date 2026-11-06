@@ -6,6 +6,7 @@
 const ENDPOINT = "https://script.google.com/macros/s/AKfycbzBUDYA7tH6kMVxJnwS8lOMnXyMKr1i4kTwBvW6uFTcOOH1ZDho_2dYLBUdlweIZjyA_w/exec";
 
 const MAX_WORDS = 300;
+const MIN_WORDS = 50;             // set to 0 to accept any length
 const MIN_SECONDS = 4;            // must match MIN_SECONDS in Code.gs
 const openedAt = Date.now();
 
@@ -20,7 +21,7 @@ const openedAt = Date.now();
 
   function updateCounter() {
     const n = words(abstract.value);
-    counter.textContent = `${n} / ${MAX_WORDS} words`;
+    counter.textContent = `${n} ${n === 1 ? "word" : "words"} (${MIN_WORDS}–${MAX_WORDS})`;
     counter.classList.toggle("is-over", n > MAX_WORDS);
   }
   abstract.addEventListener("input", () => { updateCounter(); clear("abstract"); });
@@ -32,6 +33,23 @@ const openedAt = Date.now();
       inPerson.hidden = form.attendance.value !== "In person";
     })
   );
+
+  // Dietary requirements: "None" excludes the others; "Other" asks for details
+  const diet = [...form.querySelectorAll('input[name="dietary"]')];
+  const otherBox = $("dietary-other-box"), otherText = $("dietaryOther");
+  diet.forEach((c) => c.addEventListener("change", () => {
+    if (c.checked && c.value === "None") diet.forEach((d) => { if (d !== c) d.checked = false; });
+    if (c.checked && c.value !== "None") diet.forEach((d) => { if (d.value === "None") d.checked = false; });
+    const other = diet.find((d) => d.value === "Other").checked;
+    otherBox.hidden = !other;
+    if (other && c.value === "Other") otherText.focus();
+    clear("dietary"); clear("dietaryOther");
+  }));
+  otherText.addEventListener("input", () => clear("dietaryOther"));
+  function dietaryValue() {
+    return diet.filter((d) => d.checked).map((d) =>
+      d.value === "Other" ? "Other: " + otherText.value.trim() : d.value).join("; ");
+  }
 
   form.querySelectorAll('input[name="poster"]').forEach((r) =>
     r.addEventListener("change", () => {
@@ -68,10 +86,13 @@ const openedAt = Date.now();
     if (!v("affiliation")) fail("affiliation", "Enter your university or institute.");
     if (!form.attendance.value) fail("attendance", "Choose in person or online.");
     const here = form.attendance.value === "In person";
+    if (here && !diet.some((d) => d.checked)) fail("dietary", "Tick at least one option, or \"No dietary requirements\".");
+    if (here && diet.find((d) => d.value === "Other").checked && !otherText.value.trim()) fail("dietaryOther", "Tell us which requirement or allergy.");
     if (here && !form.poster.value) fail("poster", "Choose whether you'll present a poster.");
     if (here && form.poster.value === "Yes") {
       const n = words(abstract.value);
       if (!n) fail("abstract", "Paste your abstract, or choose No above.");
+      else if (n < MIN_WORDS) fail("abstract", `Your abstract is ${n} words. It should be at least ${MIN_WORDS}: check that you pasted all of it.`);
       else if (n > MAX_WORDS) fail("abstract", `Your abstract is ${n} words. Shorten it to ${MAX_WORDS} or fewer.`);
     }
     if (!form.consent.checked) fail("consent", "Tick the box so we can store your registration.");
@@ -93,7 +114,7 @@ const openedAt = Date.now();
       email: form.email.value.trim(),
       affiliation: form.affiliation.value.trim(),
       attendance: form.attendance.value,
-      dietary: form.attendance.value === "In person" ? form.dietary.value.trim() : "",
+      dietary: form.attendance.value === "In person" ? dietaryValue() : "",
       poster: form.attendance.value === "In person" ? form.poster.value : "No",
       abstract: form.attendance.value === "In person" && form.poster.value === "Yes" ? abstract.value.trim() : "",
       website: form.website.value,   // spam trap

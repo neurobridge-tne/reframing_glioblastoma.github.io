@@ -7,7 +7,7 @@
   <meta name="description" content="Register for the workshop Reframing Glioblastoma. Free, in person or online, with optional poster abstract.">
   <link rel="icon" type="image/png" href="../assets/favicon.png">
   <link rel="preload" href="../assets/fonts/schibsted-grotesk-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../assets/style.css?v=20261106a">
+  <link rel="stylesheet" href="../assets/style.css?v=20261106b">
 </head>
 <body>
 
@@ -38,7 +38,7 @@
 <section>
   <div class="wrap split">
     <div>
-      <p class="prose" style="font-size:17px; color:var(--muted)">Registration is free, and lunch is offered to everyone attending in person. You can present a poster if you attend in person. All fields are required unless marked otherwise. You'll get a confirmation email as soon as you submit.</p>
+      <p class="prose" style="font-size:17px; color:var(--muted)">Registration is free, and lunch is offered to everyone attending in person. You can present a poster if you attend in person. All fields are required. You'll get a confirmation email as soon as you submit.</p>
     </div>
 
     <div>
@@ -83,11 +83,22 @@
         <div id="in-person" hidden>
           <fieldset>
             <legend>Lunch</legend>
-            <div class="field">
-              <label for="dietary">Dietary restrictions or allergies <span class="optional">optional</span></label>
-              <span class="hint" id="dietary-hint">Lunch is offered to everyone attending in person. Leave this empty if you have none.</span>
-              <input type="text" id="dietary" name="dietary" maxlength="300" aria-describedby="dietary-hint">
+            <p class="hint" style="margin:-8px 0 16px">Lunch is offered to everyone attending in person. Do you have any dietary requirements? Tick all that apply.</p>
+            <div class="checks" aria-describedby="dietary-err">
+              <label class="check"><input type="checkbox" name="dietary" value="None"><span>No dietary requirements</span></label>
+              <label class="check"><input type="checkbox" name="dietary" value="Lactose intolerance"><span>Lactose intolerance</span></label>
+              <label class="check"><input type="checkbox" name="dietary" value="Gluten intolerance or sensitivity"><span>Gluten intolerance or sensitivity</span></label>
+              <label class="check"><input type="checkbox" name="dietary" value="Vegetarian"><span>Vegetarian</span></label>
+              <label class="check"><input type="checkbox" name="dietary" value="Vegan"><span>Vegan</span></label>
+              <label class="check"><input type="checkbox" name="dietary" value="Dairy-free diet"><span>Dairy-free diet</span></label>
+              <label class="check"><input type="checkbox" name="dietary" value="Other" id="dietary-other"><span>Other, including allergies</span></label>
             </div>
+            <div class="field" id="dietary-other-box" hidden style="margin-top:14px">
+              <label for="dietaryOther">Please specify</label>
+              <input type="text" id="dietaryOther" name="dietaryOther" maxlength="150" aria-describedby="dietaryOther-err">
+              <p class="error" id="dietaryOther-err"></p>
+            </div>
+            <p class="error" id="dietary-err"></p>
           </fieldset>
 
           <fieldset>
@@ -101,9 +112,9 @@
 
             <div class="field abstract" id="abstract-box" hidden style="margin-top:24px">
               <label for="abstract">Poster abstract</label>
-              <span class="hint" id="abstract-hint">Plain text, up to 300 words. Include the title on the first line.</span>
+              <span class="hint" id="abstract-hint">Plain text, between 50 and 300 words. Include the title on the first line.</span>
               <textarea id="abstract" name="abstract" maxlength="4000" aria-describedby="abstract-hint abstract-count abstract-err"></textarea>
-              <span class="counter" id="abstract-count" aria-live="polite">0 / 300 words</span>
+              <span class="counter" id="abstract-count" aria-live="polite">0 words (50–300)</span>
               <p class="error" id="abstract-err"></p>
             </div>
           </fieldset>
@@ -139,13 +150,13 @@
 <footer>
   <div class="wrap foot">
     <div>
-      <p>Organized within the GENTE project, funded by XXX.</p>
+      <p>Organized within the GENTE project, funded by the Intesa Sanpaolo Charity Fund (Fondo di Beneficenza).</p>
       <p>Questions? <a href="mailto:EMAIL1,EMAIL2,EMAIL3,EMAIL4?subject=Reframing%20Glioblastoma%20workshop">Email the organizing committee</a>.</p>
     </div>
   </div>
 </footer>
 
-<script src="../assets/site.js?v=20261106a"></script>
-<script src="../assets/register.js?v=20261106a"></script>
+<script src="../assets/site.js?v=20261106b"></script>
+<script src="../assets/register.js?v=20261106b"></script>
 </body>
 </html>

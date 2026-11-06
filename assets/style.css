@@ -486,3 +486,16 @@ footer a:hover { color: #9ED3E6; }
 }
 .form .hint { color: var(--muted); font-size: 14px; }
 .optional { font-weight: 400; color: var(--muted); font-size: 14px; margin-left: 4px; }
+
+/* dietary requirements: checkbox list in two columns */
+.checks { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 12px; }
+.check {
+  display: flex; align-items: center; gap: 12px; cursor: pointer;
+  background: var(--white); border: 1.5px solid var(--rule); border-radius: 10px;
+  padding: 12px 14px; font-size: 16px; transition: border-color .15s, background .15s;
+}
+.check input { width: 18px; height: 18px; margin: 0; flex: none; accent-color: var(--indigo); }
+.check:has(input:checked) { border-color: var(--indigo); background: #EFEAF7; }
+.check:has(input:focus-visible) { outline: 2px solid var(--cyan); outline-offset: 2px; }
+@media (max-width: 640px) { .checks { grid-template-columns: 1fr; } }
+.field[hidden] { display: none; }
