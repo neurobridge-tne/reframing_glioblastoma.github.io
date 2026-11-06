@@ -3,7 +3,7 @@
    Google Sheet and emails the confirmation. Setup: see SETUP-REGISTRATION.md */
 
 // Paste here the Web app URL you get when you deploy the script (ends with /exec)
-const ENDPOINT = "";
+const ENDPOINT = "https://script.google.com/macros/s/AKfycbzBUDYA7tH6kMVxJnwS8lOMnXyMKr1i4kTwBvW6uFTcOOH1ZDho_2dYLBUdlweIZjyA_w/exec";
 
 const MAX_WORDS = 300;
 const MIN_SECONDS = 4;            // must match MIN_SECONDS in Code.gs
