@@ -6,7 +6,7 @@
 const ENDPOINT = "https://script.google.com/macros/s/AKfycbzBUDYA7tH6kMVxJnwS8lOMnXyMKr1i4kTwBvW6uFTcOOH1ZDho_2dYLBUdlweIZjyA_w/exec";
 
 const MAX_WORDS = 300;
-const MIN_WORDS = 50;             // set to 0 to accept any length
+const MIN_WORDS = 20;             // set to 0 to accept any length
 const MIN_SECONDS = 4;            // must match MIN_SECONDS in Code.gs
 const openedAt = Date.now();
 
