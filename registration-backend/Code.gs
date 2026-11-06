@@ -20,8 +20,12 @@ const MAX_PER_EMAIL   = 2;     // registrations allowed with the same email
 const MIN_SECONDS     = 4;     // faster than this from page load = bot
 // ---------------------------------------------------------------------------
 
+// Column order in the sheet. New columns are added at the end, so a sheet
+// created by an earlier version of this script keeps working.
 const HEADERS = ['Submitted at', 'First name', 'Last name', 'Email', 'Affiliation',
-                 'Attendance', 'Poster', 'Abstract', 'Abstract words', 'Already registered?', 'Confirmation email'];
+                 'Attendance', 'Poster', 'Abstract', 'Abstract words', 'Already registered?', 'Confirmation email',
+                 'Dietary restrictions / allergies'];
+const COL_CONFIRMATION = 11;
 
 function doPost(e) {
   try {
@@ -37,7 +41,10 @@ function doPost(e) {
       attendance:  d.attendance === 'Online' ? 'Online' : (d.attendance === 'In person' ? 'In person' : ''),
       poster:      d.poster === 'Yes' ? 'Yes' : (d.poster === 'No' ? 'No' : ''),
       abstract:    d.poster === 'Yes' ? text(d.abstract, 4000) : '',
+      dietary:     text(d.dietary, 300),
     };
+    // Posters and lunch are for in-person participants only
+    if (clean.attendance === 'Online') { clean.poster = 'No'; clean.abstract = ''; clean.dietary = ''; }
     const error = validate(clean);
     if (error) return reply({ ok: false, error: error });
 
@@ -51,7 +58,8 @@ function doPost(e) {
       if (previous >= MAX_PER_EMAIL) return reply({ ok: false, error: 'limit' });
       const duplicate = previous > 0 ? 'Yes' : '';
       sheet.appendRow([new Date(), clean.firstName, clean.lastName, clean.email, clean.affiliation,
-                       clean.attendance, clean.poster, clean.abstract, words(clean.abstract), duplicate].map(safeCell));
+                       clean.attendance, clean.poster, clean.abstract, words(clean.abstract), duplicate,
+                       '', clean.attendance === 'In person' ? (clean.dietary || 'None') : ''].map(safeCell));
       row = sheet.getLastRow();
     } finally {
       lock.releaseLock();
@@ -66,7 +74,7 @@ function doPost(e) {
       emailSent = false;
       console.error('Confirmation email failed: ' + mailErr);
     }
-    getSheet().getRange(row, HEADERS.length).setValue(emailSent ? 'Sent' : 'NOT sent: check the email permission');
+    getSheet().getRange(row, COL_CONFIRMATION).setValue(emailSent ? 'Sent' : 'NOT sent: check the email permission');
     if (ORGANIZER_COPY) {
       try {
         MailApp.sendEmail(ORGANIZER_COPY, 'New registration: ' + clean.firstName + ' ' + clean.lastName, summaryText(clean));
@@ -109,9 +117,12 @@ function getSheet() {
     sheet.appendRow(HEADERS);
     sheet.setFrozenRows(1);
     sheet.getRange(1, 1, 1, HEADERS.length).setFontWeight('bold');
-  } else if (!sheet.getRange(1, HEADERS.length).getValue()) {
-    // sheet made by an older version of this script: add the new column title
-    sheet.getRange(1, HEADERS.length).setValue(HEADERS[HEADERS.length - 1]).setFontWeight('bold');
+  } else {
+    // sheet made by an older version of this script: add any missing column titles
+    HEADERS.forEach(function (title, i) {
+      const cell = sheet.getRange(1, i + 1);
+      if (!cell.getValue()) cell.setValue(title).setFontWeight('bold');
+    });
   }
   return sheet;
 }
@@ -126,15 +137,17 @@ function summaryText(c) {
     'Email: ' + c.email,
     'Affiliation: ' + c.affiliation,
     'Attendance: ' + c.attendance,
+  ].concat(c.attendance === 'In person' ? ['Dietary restrictions / allergies: ' + (c.dietary || 'None')] : [])
+   .concat([
     'Poster: ' + c.poster,
-  ].concat(c.poster === 'Yes' ? ['', 'Abstract:', c.abstract] : []).join('\n');
+  ]).concat(c.poster === 'Yes' ? ['', 'Abstract:', c.abstract] : []).join('\n');
 }
 
 function sendConfirmation(c) {
   const subject = 'Registration confirmed: ' + EVENT_NAME;
   const online = c.attendance === 'Online'
     ? 'You will attend online. We will email you the streaming link a few days before the workshop.'
-    : 'You will attend in person at ' + EVENT_PLACE + '.';
+    : 'You will attend in person at ' + EVENT_PLACE + '. Lunch is offered to in-person participants.';
   const poster = c.poster === 'Yes'
     ? 'We have received your poster abstract. The organizers will let you know whether it has been accepted.'
     : '';
@@ -160,7 +173,9 @@ function sendConfirmation(c) {
     (poster ? '<p>' + esc(poster) + '</p>' : '') +
     '<table style="border-collapse:collapse;margin:20px 0;border-top:1px solid #DED7E6;padding-top:8px">' +
       row('Name', c.firstName + ' ' + c.lastName) + row('Email', c.email) + row('Affiliation', c.affiliation) +
-      row('Attendance', c.attendance) + row('Poster', c.poster) +
+      row('Attendance', c.attendance) +
+      (c.attendance === 'In person' ? row('Dietary restrictions / allergies', c.dietary || 'None') : '') +
+      row('Poster', c.poster) +
     '</table>' +
     (c.poster === 'Yes' ? '<p style="color:#635A78;margin-bottom:4px">Your abstract</p><p style="white-space:pre-wrap;background:#F6F4F8;padding:12px 14px;border-radius:6px">' + esc(c.abstract) + '</p>' : '') +
     '<p>If anything is wrong, or you can no longer attend, just reply to this email.</p>' +

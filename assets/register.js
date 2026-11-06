@@ -25,6 +25,14 @@ const openedAt = Date.now();
   }
   abstract.addEventListener("input", () => { updateCounter(); clear("abstract"); });
 
+  // Lunch and posters only concern people attending in person
+  const inPerson = $("in-person");
+  form.querySelectorAll('input[name="attendance"]').forEach((r) =>
+    r.addEventListener("change", () => {
+      inPerson.hidden = form.attendance.value !== "In person";
+    })
+  );
+
   form.querySelectorAll('input[name="poster"]').forEach((r) =>
     r.addEventListener("change", () => {
       const yes = form.poster.value === "Yes";
@@ -59,8 +67,9 @@ const openedAt = Date.now();
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v("email"))) fail("email", "Enter an email address like name@university.edu.");
     if (!v("affiliation")) fail("affiliation", "Enter your university or institute.");
     if (!form.attendance.value) fail("attendance", "Choose in person or online.");
-    if (!form.poster.value) fail("poster", "Choose whether you'll present a poster.");
-    if (form.poster.value === "Yes") {
+    const here = form.attendance.value === "In person";
+    if (here && !form.poster.value) fail("poster", "Choose whether you'll present a poster.");
+    if (here && form.poster.value === "Yes") {
       const n = words(abstract.value);
       if (!n) fail("abstract", "Paste your abstract, or choose No above.");
       else if (n > MAX_WORDS) fail("abstract", `Your abstract is ${n} words. Shorten it to ${MAX_WORDS} or fewer.`);
@@ -84,8 +93,9 @@ const openedAt = Date.now();
       email: form.email.value.trim(),
       affiliation: form.affiliation.value.trim(),
       attendance: form.attendance.value,
-      poster: form.poster.value,
-      abstract: form.poster.value === "Yes" ? abstract.value.trim() : "",
+      dietary: form.attendance.value === "In person" ? form.dietary.value.trim() : "",
+      poster: form.attendance.value === "In person" ? form.poster.value : "No",
+      abstract: form.attendance.value === "In person" && form.poster.value === "Yes" ? abstract.value.trim() : "",
       website: form.website.value,   // spam trap
       elapsed: Date.now() - openedAt,
     };

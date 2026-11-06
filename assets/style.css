@@ -484,3 +484,5 @@ footer a:hover { color: #9ED3E6; }
   .slot--tba time { padding-top: 0; }
   .slot:not(.slot--break):not(.slot--tba) .node::after { top: 16px; }
 }
+.form .hint { color: var(--muted); font-size: 14px; }
+.optional { font-weight: 400; color: var(--muted); font-size: 14px; margin-left: 4px; }

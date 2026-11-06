@@ -7,7 +7,7 @@
   <meta name="description" content="Register for the workshop Reframing Glioblastoma. Free, in person or online, with optional poster abstract.">
   <link rel="icon" type="image/png" href="../assets/favicon.png">
   <link rel="preload" href="../assets/fonts/schibsted-grotesk-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../assets/style.css?v=20261105c">
+  <link rel="stylesheet" href="../assets/style.css?v=20261106a">
 </head>
 <body>
 
@@ -38,7 +38,7 @@
 <section>
   <div class="wrap split">
     <div>
-      <p class="prose" style="font-size:17px; color:var(--muted)">Registration is free. All fields are required. You'll get a confirmation email as soon as you submit.</p>
+      <p class="prose" style="font-size:17px; color:var(--muted)">Registration is free, and lunch is offered to everyone attending in person. You can present a poster if you attend in person. All fields are required unless marked otherwise. You'll get a confirmation email as soon as you submit.</p>
     </div>
 
     <div>
@@ -73,28 +73,41 @@
         <fieldset>
           <legend>How will you attend?</legend>
           <div class="choices" role="radiogroup" aria-describedby="attendance-err">
-            <label class="choice"><input type="radio" name="attendance" value="In person" required><span><b>In person</b><small>CNR Research Area, Pisa</small></span></label>
+            <label class="choice"><input type="radio" name="attendance" value="In person" required><span><b>In person</b><small>CNR Research Area, Pisa. Lunch is offered.</small></span></label>
             <label class="choice"><input type="radio" name="attendance" value="Online"><span><b>Online</b><small>We'll email you the streaming link</small></span></label>
           </div>
           <p class="error" id="attendance-err"></p>
         </fieldset>
 
-        <fieldset>
-          <legend>Would you like to present a poster?</legend>
-          <div class="choices" role="radiogroup" aria-describedby="poster-err">
-            <label class="choice"><input type="radio" name="poster" value="Yes" required><span><b>Yes</b><small>I'll submit an abstract</small></span></label>
-            <label class="choice"><input type="radio" name="poster" value="No"><span><b>No</b><small>I'll attend only</small></span></label>
-          </div>
-          <p class="error" id="poster-err"></p>
+        <!-- Shown only to in-person participants: lunch and posters -->
+        <div id="in-person" hidden>
+          <fieldset>
+            <legend>Lunch</legend>
+            <div class="field">
+              <label for="dietary">Dietary restrictions or allergies <span class="optional">optional</span></label>
+              <span class="hint" id="dietary-hint">Lunch is offered to everyone attending in person. Leave this empty if you have none.</span>
+              <input type="text" id="dietary" name="dietary" maxlength="300" aria-describedby="dietary-hint">
+            </div>
+          </fieldset>
 
-          <div class="field abstract" id="abstract-box" hidden style="margin-top:24px">
-            <label for="abstract">Poster abstract</label>
-            <span class="hint" id="abstract-hint">Plain text, up to 300 words. Include the title on the first line.</span>
-            <textarea id="abstract" name="abstract" maxlength="4000" aria-describedby="abstract-hint abstract-count abstract-err"></textarea>
-            <span class="counter" id="abstract-count" aria-live="polite">0 / 300 words</span>
-            <p class="error" id="abstract-err"></p>
-          </div>
-        </fieldset>
+          <fieldset>
+            <legend>Would you like to present a poster?</legend>
+            <p class="hint" style="margin:-8px 0 16px">Posters are presented in person during the poster session.</p>
+            <div class="choices" role="radiogroup" aria-describedby="poster-err">
+              <label class="choice"><input type="radio" name="poster" value="Yes"><span><b>Yes</b><small>I'll submit an abstract</small></span></label>
+              <label class="choice"><input type="radio" name="poster" value="No"><span><b>No</b><small>I'll attend only</small></span></label>
+            </div>
+            <p class="error" id="poster-err"></p>
+
+            <div class="field abstract" id="abstract-box" hidden style="margin-top:24px">
+              <label for="abstract">Poster abstract</label>
+              <span class="hint" id="abstract-hint">Plain text, up to 300 words. Include the title on the first line.</span>
+              <textarea id="abstract" name="abstract" maxlength="4000" aria-describedby="abstract-hint abstract-count abstract-err"></textarea>
+              <span class="counter" id="abstract-count" aria-live="polite">0 / 300 words</span>
+              <p class="error" id="abstract-err"></p>
+            </div>
+          </fieldset>
+        </div>
 
         <fieldset>
           <label class="consent">
@@ -126,13 +139,13 @@
 <footer>
   <div class="wrap foot">
     <div>
-      <p>Organized within the GENTE project, funded by XXXX.</p>
+      <p>Organized within the GENTE project, funded by the Intesa Sanpaolo Charity Fund (Fondo di Beneficenza).</p>
       <p>Questions? <a href="mailto:EMAIL1,EMAIL2,EMAIL3,EMAIL4?subject=Reframing%20Glioblastoma%20workshop">Email the organizing committee</a>.</p>
     </div>
   </div>
 </footer>
 
-<script src="../assets/site.js?v=20261105c"></script>
-<script src="../assets/register.js?v=20261105c"></script>
+<script src="../assets/site.js?v=20261106a"></script>
+<script src="../assets/register.js?v=20261106a"></script>
 </body>
 </html>
