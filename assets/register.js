@@ -14,6 +14,38 @@ const openedAt = Date.now();
   const form = document.getElementById("reg");
   if (!form) return;
   const $ = (id) => document.getElementById(id);
+
+  // ---- In-person seats: read from the Google Sheet through the same script ----
+  const seatsBox = $("seats"), seatsLeft = $("seats-left");
+  const seatsInline = $("seats-inline"), fullNote = $("full-note");
+  const inPersonRadio = form.querySelector('input[name="attendance"][value="In person"]');
+
+  function closeInPerson() {
+    inPersonRadio.disabled = true;
+    if (inPersonRadio.checked) {
+      inPersonRadio.checked = false;
+      $("in-person").hidden = true;
+    }
+    $("choice-in-person").classList.add("is-full");
+    seatsInline.textContent = "Full: online only";
+    fullNote.hidden = false;
+  }
+  function showSeats(info) {
+    if (!info || typeof info.left !== "number") return;
+    seatsLeft.textContent = info.left;
+    seatsBox.hidden = false;
+    seatsBox.classList.toggle("is-low", info.left > 0 && info.left <= 5);
+    seatsInline.textContent = info.left > 0 ? `${info.left} ${info.left === 1 ? "seat" : "seats"} left` : "";
+    if (info.left <= 0) closeInPerson();
+  }
+  async function loadSeats() {
+    if (!ENDPOINT) return;
+    try {
+      const res = await fetch(ENDPOINT + "?seats=1&t=" + Date.now());
+      showSeats(await res.json());
+    } catch (e) { /* counter stays hidden; the script still checks seats on submit */ }
+  }
+  loadSeats();
   const abstractBox = $("abstract-box"), abstract = $("abstract"), counter = $("abstract-count");
   const status = $("status"), submit = $("submit");
 
@@ -143,6 +175,7 @@ const openedAt = Date.now();
         const e = new Error(out.error || "rejected"); e.code = out.error; throw e;
       }
       $("done-email").textContent = data.email;
+      loadSeats();
       if (out.emailSent === false) {
         $("done-msg").textContent = "Your registration is saved, but we couldn't send the confirmation email. You don't need to register again: the organizers will contact you.";
       }
@@ -154,7 +187,9 @@ const openedAt = Date.now();
       const msgs = {
         limit: "This email has already been used for 2 registrations. To change your details, email the organizing committee (link at the bottom of the page).",
         too_fast: "Please check your details, then press Register again.",
+        full: "The last in-person seat has just been taken. You can still register to follow online: choose Online and press Register again.",
       };
+      if (err.code === "full") { closeInPerson(); loadSeats(); }
       status.textContent = msgs[err.code] || "Your registration didn't go through. Check your connection and try again. If it keeps failing, email the organizing committee (link at the bottom of the page).";
       if (err.code === "limit") setError("email", "Already used for 2 registrations.");
       status.classList.add("is-error");

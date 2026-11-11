@@ -499,3 +499,28 @@ footer a:hover { color: #9ED3E6; }
 .check:has(input:focus-visible) { outline: 2px solid var(--cyan); outline-offset: 2px; }
 @media (max-width: 640px) { .checks { grid-template-columns: 1fr; } }
 .field[hidden] { display: none; }
+
+/* ---------- Partner logos next to the GENTE project ---------- */
+/* text on the left, logos stacked on the right; below the text on narrow screens */
+.with-logos { display: flex; gap: 40px; align-items: flex-start; }
+.with-logos > p { flex: 1 1 auto; min-width: 0; }
+.partner-logos { flex: none; display: flex; flex-direction: column; align-items: center; gap: 26px; padding: 4px 8px 0 0; }
+.partner-logos img { height: 64px; width: auto; }
+@media (max-width: 900px) {
+  .with-logos { flex-direction: column; gap: 14px; }
+  .partner-logos { flex-direction: row; flex-wrap: wrap; gap: 20px 36px; padding: 0; }
+}
+@media (max-width: 640px) { .partner-logos img { height: 52px; } }
+
+/* ---------- Registration: in-person seats left ---------- */
+.seats { margin-top: 28px; padding: 18px 20px; border-radius: 12px; background: var(--white); border: 1px solid var(--rule); max-width: 240px; }
+.seats__num { margin: 0; font-size: 56px; line-height: 1; font-weight: 600; letter-spacing: -0.03em; color: var(--indigo); font-variant-numeric: lining-nums; }
+.seats__label { margin: 6px 0 0; font-size: 15px; color: var(--muted); line-height: 1.35; }
+.seats.is-low .seats__num { color: var(--cyan); }
+.choice .seats-inline { display: block; margin-top: 2px; color: var(--indigo); font-weight: 500; }
+.choice.is-full span { opacity: .55; cursor: not-allowed; }
+.choice.is-full input { cursor: not-allowed; }
+.choice.is-full .seats-inline { color: var(--cyan); }
+.full-note { margin: 12px 0 0; padding: 10px 14px; border-radius: 8px; background: #F7E4EC; color: var(--ink); font-size: 15px; }
+.full-note[hidden] { display: none; }
+@media (max-width: 900px) { .seats { max-width: none; display: flex; align-items: baseline; gap: 12px; } .seats__label { margin: 0; } .seats__num { font-size: 40px; } }
