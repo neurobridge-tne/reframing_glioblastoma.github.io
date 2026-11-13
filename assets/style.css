@@ -524,3 +524,9 @@ footer a:hover { color: #9ED3E6; }
 .full-note { margin: 12px 0 0; padding: 10px 14px; border-radius: 8px; background: #F7E4EC; color: var(--ink); font-size: 15px; }
 .full-note[hidden] { display: none; }
 @media (max-width: 900px) { .seats { max-width: none; display: flex; align-items: baseline; gap: 12px; } .seats__label { margin: 0; } .seats__num { font-size: 40px; } }
+
+/* ---------- Staff: names grouped by role ---------- */
+.staff { display: grid; grid-template-columns: repeat(2, minmax(0, max-content)); gap: 8px 72px; margin: 0; }
+.staff dt { font-size: 14px; color: var(--muted); margin: 0 0 6px; }
+.staff dd { margin: 0; padding: 2px 0; font-size: 17px; }
+@media (max-width: 640px) { .staff { grid-template-columns: 1fr; gap: 20px; } }
