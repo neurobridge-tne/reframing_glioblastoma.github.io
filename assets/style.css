@@ -533,3 +533,8 @@ footer a:hover { color: #9ED3E6; }
 .abstract .field + .field { margin-top: 20px; }
 .field textarea#posterAffiliations { min-height: 96px; font-family: var(--sans); font-size: 16px; }
 .venue address strong { font-weight: 600; color: var(--indigo); }
+
+/* ---------- Footer: patronage ---------- */
+.patronage { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+.patronage p { margin: 0; font-size: 14px; color: #C6CDD8; }
+.patronage img { height: 64px; width: auto; background: var(--white); padding: 10px 14px; border-radius: 8px; box-sizing: content-box; }
