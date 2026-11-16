@@ -5,6 +5,9 @@
 // Paste here the Web app URL you get when you deploy the script (ends with /exec)
 const ENDPOINT = "https://script.google.com/macros/s/AKfycbzBUDYA7tH6kMVxJnwS8lOMnXyMKr1i4kTwBvW6uFTcOOH1ZDho_2dYLBUdlweIZjyA_w/exec";
 
+// Set to false to suspend registration: the form is hidden and a notice is shown.
+const REGISTRATION_OPEN = false;
+
 const MAX_WORDS = 300;
 const MIN_WORDS = 20;             // set to 0 to accept any length
 const MIN_SECONDS = 4;            // must match MIN_SECONDS in Code.gs
@@ -13,6 +16,12 @@ const openedAt = Date.now();
 (function () {
   const form = document.getElementById("reg");
   if (!form) return;
+  if (!REGISTRATION_OPEN) {
+    form.hidden = true;
+    const seats = document.getElementById("seats"); if (seats) seats.hidden = true;
+    document.getElementById("closed").hidden = false;
+    return;
+  }
   const $ = (id) => document.getElementById(id);
 
   // ---- In-person seats: read from the Google Sheet through the same script ----
