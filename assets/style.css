@@ -538,3 +538,12 @@ footer a:hover { color: #9ED3E6; }
 .patronage { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
 .patronage p { margin: 0; font-size: 14px; color: #C6CDD8; }
 .patronage img { height: 64px; width: auto; background: var(--white); padding: 10px 14px; border-radius: 8px; box-sizing: content-box; }
+
+/* ---------- Compact footer ---------- */
+footer { padding: 28px 0; }
+.foot { align-items: center; gap: 16px 40px; }
+.foot p { margin: 0 0 2px; font-size: 14px; line-height: 1.5; }
+.patronage { flex-direction: row; align-items: center; gap: 12px; }
+.patronage p { white-space: nowrap; font-size: 13px; }
+.patronage img { height: 44px; padding: 6px 10px; border-radius: 6px; }
+@media (max-width: 900px) { .patronage { margin-top: 4px; } }
