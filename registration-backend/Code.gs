@@ -8,23 +8,24 @@
 
 // ---- Settings -------------------------------------------------------------
 const EVENT_NAME      = 'Reframing Glioblastoma';
-const EVENT_SUBTITLE  = 'Integrating Tumor Biology, Microenvironment and Clinical Perspectives';
+const EVENT_SUBTITLE  = 'Integrating Tumor Biology, the Microenvironment and Clinical Perspectives';
 const EVENT_DATE      = 'Thursday 18 February 2027';
 const EVENT_PLACE     = 'CNR Research Area of Pisa, Via Giuseppe Moruzzi 1, Pisa';
-const SITE_URL        = 'https://YOUR-SITE-ADDRESS/';        // shown in the email
+const SITE_URL        = 'https://neurobridge-tne.github.io/reframing_glioblastoma.github.io/';        // shown in the email
 const CONTACT_EMAIL   = 'EMAIL1';   // replies to the confirmation email go here (one address)
 const ORGANIZER_COPY  = '';  // optional: an address that gets a copy of every registration
 const SHEET_NAME      = 'Registrations';
 const MAX_WORDS       = 300;
 const MAX_PER_EMAIL   = 2;     // registrations allowed with the same email
 const MIN_SECONDS     = 4;     // faster than this from page load = bot
+const CAPACITY        = 40;    // in-person seats; when they run out, only online registration is accepted
 // ---------------------------------------------------------------------------
 
 // Column order in the sheet. New columns are added at the end, so a sheet
 // created by an earlier version of this script keeps working.
 const HEADERS = ['Submitted at', 'First name', 'Last name', 'Email', 'Affiliation',
                  'Attendance', 'Poster', 'Abstract', 'Abstract words', 'Already registered?', 'Confirmation email',
-                 'Dietary restrictions / allergies'];
+                 'Dietary restrictions / allergies', 'Poster title', 'Poster authors', 'Poster affiliations'];
 const COL_CONFIRMATION = 11;
 
 function doPost(e) {
@@ -42,9 +43,13 @@ function doPost(e) {
       poster:      d.poster === 'Yes' ? 'Yes' : (d.poster === 'No' ? 'No' : ''),
       abstract:    d.poster === 'Yes' ? text(d.abstract, 4000) : '',
       dietary:     text(d.dietary, 300),
+      posterTitle:        d.poster === 'Yes' ? text(d.posterTitle, 250) : '',
+      posterAuthors:      d.poster === 'Yes' ? text(d.posterAuthors, 1000) : '',
+      posterAffiliations: d.poster === 'Yes' ? text(d.posterAffiliations, 1500) : '',
     };
     // Posters and lunch are for in-person participants only
-    if (clean.attendance === 'Online') { clean.poster = 'No'; clean.abstract = ''; clean.dietary = ''; }
+    if (clean.attendance === 'Online') { clean.poster = 'No'; clean.abstract = ''; clean.dietary = '';
+      clean.posterTitle = ''; clean.posterAuthors = ''; clean.posterAffiliations = ''; }
     const error = validate(clean);
     if (error) return reply({ ok: false, error: error });
 
@@ -56,10 +61,16 @@ function doPost(e) {
       const emails = sheet.getLastRow() > 1 ? sheet.getRange(2, 4, sheet.getLastRow() - 1, 1).getValues().flat() : [];
       const previous = emails.filter(function (m) { return String(m).toLowerCase() === clean.email; }).length;
       if (previous >= MAX_PER_EMAIL) return reply({ ok: false, error: 'limit' });
+      if (clean.attendance === 'In person') {
+        const s = seats(sheet);
+        // someone who already holds a seat may re-register (e.g. to fix a detail)
+        if (s.left <= 0 && s.byEmail[clean.email] !== 'In person') return reply({ ok: false, error: 'full', left: 0 });
+      }
       const duplicate = previous > 0 ? 'Yes' : '';
       sheet.appendRow([new Date(), clean.firstName, clean.lastName, clean.email, clean.affiliation,
                        clean.attendance, clean.poster, clean.abstract, words(clean.abstract), duplicate,
-                       '', clean.attendance === 'In person' ? (clean.dietary || 'None') : ''].map(safeCell));
+                       '', clean.attendance === 'In person' ? (clean.dietary || 'None') : '',
+                       clean.posterTitle, clean.posterAuthors, clean.posterAffiliations].map(safeCell));
       row = sheet.getLastRow();
     } finally {
       lock.releaseLock();
@@ -87,9 +98,28 @@ function doPost(e) {
   }
 }
 
-// Opening the web app URL in a browser shows this: handy to check the deployment works.
+// The registration page asks this for the number of in-person seats left.
+// Opening the web app URL in a browser shows the same answer.
 function doGet() {
-  return ContentService.createTextOutput('Registration endpoint for ' + EVENT_NAME + ' is running.');
+  const s = seats(getSheet());
+  // only the seats left: the total capacity is not made public
+  return reply({ ok: true, left: s.left });
+}
+
+// In-person seats taken = people whose LATEST registration is "In person"
+// (counted once per email, so a corrected registration doesn't take two seats).
+function seats(sheet) {
+  const byEmail = {};
+  const n = sheet.getLastRow() - 1;
+  if (n > 0) {
+    sheet.getRange(2, 4, n, 3).getValues().forEach(function (r) {   // columns D (email) .. F (attendance)
+      const email = String(r[0]).trim().toLowerCase();
+      if (email) byEmail[email] = String(r[2]).trim();
+    });
+  }
+  let taken = 0;
+  Object.keys(byEmail).forEach(function (e) { if (byEmail[e] === 'In person') taken++; });
+  return { taken: taken, left: Math.max(0, CAPACITY - taken), byEmail: byEmail };
 }
 
 // ---- helpers ----------------------------------------------------------------
@@ -99,6 +129,7 @@ function validate(c) {
   if (!c.affiliation) return 'affiliation';
   if (!c.attendance) return 'attendance';
   if (!c.poster) return 'poster';
+  if (c.poster === 'Yes' && (!c.posterTitle || !c.posterAuthors || !c.posterAffiliations)) return 'poster';
   if (c.poster === 'Yes' && (words(c.abstract) === 0 || words(c.abstract) > MAX_WORDS)) return 'abstract';
   return '';
 }
@@ -140,7 +171,8 @@ function summaryText(c) {
   ].concat(c.attendance === 'In person' ? ['Dietary restrictions / allergies: ' + (c.dietary || 'None')] : [])
    .concat([
     'Poster: ' + c.poster,
-  ]).concat(c.poster === 'Yes' ? ['', 'Abstract:', c.abstract] : []).join('\n');
+  ]).concat(c.poster === 'Yes' ? ['', 'Poster title: ' + c.posterTitle, 'Authors: ' + c.posterAuthors,
+                                   'Affiliations:', c.posterAffiliations, '', 'Abstract:', c.abstract] : []).join('\n');
 }
 
 function sendConfirmation(c) {
@@ -177,7 +209,12 @@ function sendConfirmation(c) {
       (c.attendance === 'In person' ? row('Dietary restrictions / allergies', c.dietary || 'None') : '') +
       row('Poster', c.poster) +
     '</table>' +
-    (c.poster === 'Yes' ? '<p style="color:#635A78;margin-bottom:4px">Your abstract</p><p style="white-space:pre-wrap;background:#F6F4F8;padding:12px 14px;border-radius:6px">' + esc(c.abstract) + '</p>' : '') +
+    (c.poster === 'Yes' ? '<p style="color:#635A78;margin-bottom:4px">Your poster</p>' +
+      '<div style="background:#F6F4F8;padding:12px 14px;border-radius:6px">' +
+      '<p style="margin:0 0 6px;font-weight:bold">' + esc(c.posterTitle) + '</p>' +
+      '<p style="margin:0 0 4px">' + esc(c.posterAuthors) + '</p>' +
+      '<p style="margin:0 0 12px;white-space:pre-wrap;color:#635A78;font-size:13px">' + esc(c.posterAffiliations) + '</p>' +
+      '<p style="margin:0;white-space:pre-wrap">' + esc(c.abstract) + '</p></div>' : '') +
     '<p>If anything is wrong, or you can no longer attend, just reply to this email.</p>' +
     '<p>The organizing committee<br><a href="' + esc(SITE_URL) + '" style="color:#4A2C86">' + esc(SITE_URL) + '</a></p>' +
     '</div>';

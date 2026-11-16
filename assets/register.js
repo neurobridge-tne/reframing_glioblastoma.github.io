@@ -88,7 +88,7 @@ const openedAt = Date.now();
       const yes = form.poster.value === "Yes";
       abstractBox.hidden = !yes;
       abstract.required = yes;
-      if (yes) abstract.focus();
+      if (yes) form.posterTitle.focus();
     })
   );
 
@@ -104,7 +104,7 @@ const openedAt = Date.now();
     const input = form.elements[name];
     if (input && input.removeAttribute) input.removeAttribute("aria-invalid");
   }
-  ["firstName", "lastName", "email", "affiliation", "consent"].forEach((n) =>
+  ["firstName", "lastName", "email", "affiliation", "consent", "posterTitle", "posterAuthors", "posterAffiliations"].forEach((n) =>
     form.elements[n].addEventListener("input", () => clear(n)));
   form.querySelectorAll('input[type="radio"]').forEach((r) => r.addEventListener("change", () => clear(r.name)));
 
@@ -122,6 +122,9 @@ const openedAt = Date.now();
     if (here && diet.find((d) => d.value === "Other").checked && !otherText.value.trim()) fail("dietaryOther", "Tell us which requirement or allergy.");
     if (here && !form.poster.value) fail("poster", "Choose whether you'll present a poster.");
     if (here && form.poster.value === "Yes") {
+      if (!form.posterTitle.value.trim()) fail("posterTitle", "Enter the title of your poster.");
+      if (!form.posterAuthors.value.trim()) fail("posterAuthors", "List the authors of the poster.");
+      if (!form.posterAffiliations.value.trim()) fail("posterAffiliations", "List the authors' affiliations.");
       const n = words(abstract.value);
       if (!n) fail("abstract", "Paste your abstract, or choose No above.");
       else if (n < MIN_WORDS) fail("abstract", `Your abstract is ${n} words. It should be at least ${MIN_WORDS}: check that you pasted all of it.`);
@@ -149,6 +152,9 @@ const openedAt = Date.now();
       dietary: form.attendance.value === "In person" ? dietaryValue() : "",
       poster: form.attendance.value === "In person" ? form.poster.value : "No",
       abstract: form.attendance.value === "In person" && form.poster.value === "Yes" ? abstract.value.trim() : "",
+      posterTitle: form.attendance.value === "In person" && form.poster.value === "Yes" ? form.posterTitle.value.trim() : "",
+      posterAuthors: form.attendance.value === "In person" && form.poster.value === "Yes" ? form.posterAuthors.value.trim() : "",
+      posterAffiliations: form.attendance.value === "In person" && form.poster.value === "Yes" ? form.posterAffiliations.value.trim() : "",
       website: form.website.value,   // spam trap
       elapsed: Date.now() - openedAt,
     };

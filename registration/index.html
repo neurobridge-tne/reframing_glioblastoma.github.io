@@ -7,7 +7,7 @@
   <meta name="description" content="Register for the workshop Reframing Glioblastoma. Free, in person or online, with optional poster abstract.">
   <link rel="icon" type="image/png" href="../assets/favicon.png">
   <link rel="preload" href="../assets/fonts/schibsted-grotesk-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
-  <link rel="stylesheet" href="../assets/style.css?v=20261111b">
+  <link rel="stylesheet" href="../assets/style.css?v=20261116a">
 </head>
 <body>
 
@@ -30,7 +30,7 @@
   <img class="hero__img" src="../assets/hero-gbm.jpg" alt="" aria-hidden="true">
   <div class="wrap">
     <h1>Register</h1>
-    <p>Reframing Glioblastoma: integrating tumor biology, microenvironment and clinical perspectives. Thursday 18 February 2027, CNR Research Area, Pisa.</p>
+    <p>Reframing Glioblastoma: integrating tumor biology, the microenvironment and clinical perspectives. Thursday 18 February 2027, CNR Research Area, Pisa.</p>
   </div>
 </header>
 
@@ -117,12 +117,34 @@
             </div>
             <p class="error" id="poster-err"></p>
 
-            <div class="field abstract" id="abstract-box" hidden style="margin-top:24px">
-              <label for="abstract">Poster abstract</label>
-              <span class="hint" id="abstract-hint">Plain text, up to 300 words. Include the title on the first line.</span>
-              <textarea id="abstract" name="abstract" maxlength="4000" aria-describedby="abstract-hint abstract-count abstract-err"></textarea>
-              <span class="counter" id="abstract-count" aria-live="polite">0 words (300)</span>
-              <p class="error" id="abstract-err"></p>
+            <div class="abstract" id="abstract-box" hidden style="margin-top:24px">
+              <div class="field">
+                <label for="posterTitle">Poster title</label>
+                <input type="text" id="posterTitle" name="posterTitle" maxlength="250" aria-describedby="posterTitle-err">
+                <p class="error" id="posterTitle-err"></p>
+              </div>
+
+              <div class="field">
+                <label for="posterAuthors">Authors</label>
+                <span class="hint" id="posterAuthors-hint">In order, separated by commas. After each name, the number of their affiliation in brackets. Mark the presenting author with an asterisk.<br>Example: Anna Rossi (1)*, Luca Bianchi (1, 2), Sara Verdi (2)</span>
+                <input type="text" id="posterAuthors" name="posterAuthors" maxlength="1000" aria-describedby="posterAuthors-hint posterAuthors-err">
+                <p class="error" id="posterAuthors-err"></p>
+              </div>
+
+              <div class="field">
+                <label for="posterAffiliations">Affiliations</label>
+                <span class="hint" id="posterAffiliations-hint">One per line, numbered as in the author list.<br>Example: 1. Institute of Neuroscience, CNR, Pisa, Italy</span>
+                <textarea id="posterAffiliations" name="posterAffiliations" rows="3" maxlength="1500" aria-describedby="posterAffiliations-hint posterAffiliations-err"></textarea>
+                <p class="error" id="posterAffiliations-err"></p>
+              </div>
+
+              <div class="field">
+                <label for="abstract">Abstract</label>
+                <span class="hint" id="abstract-hint">Plain text, up to 300 words, without title and authors.</span>
+                <textarea id="abstract" name="abstract" maxlength="4000" aria-describedby="abstract-hint abstract-count abstract-err"></textarea>
+                <span class="counter" id="abstract-count" aria-live="polite">0 / 300 words</span>
+                <p class="error" id="abstract-err"></p>
+              </div>
             </div>
           </fieldset>
         </div>
@@ -163,7 +185,7 @@
   </div>
 </footer>
 
-<script src="../assets/site.js?v=20261111b"></script>
-<script src="../assets/register.js?v=20261111b"></script>
+<script src="../assets/site.js?v=20261116a"></script>
+<script src="../assets/register.js?v=20261116a"></script>
 </body>
 </html>
