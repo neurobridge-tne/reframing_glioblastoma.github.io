@@ -532,3 +532,4 @@ footer a:hover { color: #9ED3E6; }
 @media (max-width: 640px) { .staff { grid-template-columns: 1fr; gap: 20px; } }
 .abstract .field + .field { margin-top: 20px; }
 .field textarea#posterAffiliations { min-height: 96px; font-family: var(--sans); font-size: 16px; }
+.venue address strong { font-weight: 600; color: var(--indigo); }
