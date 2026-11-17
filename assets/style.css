@@ -547,3 +547,13 @@ footer { padding: 28px 0; }
 .patronage p { white-space: nowrap; font-size: 13px; }
 .patronage img { height: 44px; padding: 6px 10px; border-radius: 6px; }
 @media (max-width: 900px) { .patronage { margin-top: 4px; } }
+.patronage a { display: inline-flex; border-radius: 6px; }
+.patronage a:hover img { box-shadow: 0 0 0 2px #9ED3E6; }
+
+/* hero facts: labels aligned on one line; readable over the micrograph */
+.facts { align-items: start; }
+.facts .btn { align-self: center; }
+.facts dt, .facts dd { text-shadow: 0 0 6px var(--paper), 0 0 12px var(--paper), 0 0 18px var(--paper); }
+@media (max-width: 640px) {
+  .facts { grid-template-columns: 1fr; gap: 14px; }
+}
