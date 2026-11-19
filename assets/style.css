@@ -557,3 +557,40 @@ footer { padding: 28px 0; }
 @media (max-width: 640px) {
   .facts { grid-template-columns: 1fr; gap: 14px; }
 }
+
+/* ---------- Dark hero with the fluorescence image ---------- */
+.hero { background: #05040A; border-bottom: 0; }
+.hero__img {
+  width: 72%;
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,.45) 25%, #000 55%);
+          mask-image: linear-gradient(to right, transparent 0%, rgba(0,0,0,.45) 25%, #000 55%);
+}
+.hero h1 { color: #fff; }
+.hero h1 span { color: #8FE3B0; }
+.hero .sub { color: #E6E2EE; }
+.hero .facts dt { color: #A9A3B8; }
+.hero .facts dd { color: #fff; }
+.hero .facts dt, .hero .facts dd { text-shadow: 0 0 8px #05040A, 0 0 16px #05040A; }
+.hero .btn { background: #8FE3B0; color: #05040A; }
+.hero .btn:hover { background: #fff; color: #05040A; }
+.hero :focus-visible { outline-color: #8FE3B0; }
+@media (max-width: 640px) {
+  .hero__img {
+    width: 100%; height: 55%;
+    -webkit-mask-image: linear-gradient(to bottom, #000 30%, transparent 95%);
+            mask-image: linear-gradient(to bottom, #000 30%, transparent 95%);
+  }
+}
+/* same look for the registration page header */
+.page-head { background: #05040A; border-bottom: 0; }
+.page-head h1 { color: #fff; }
+.page-head p { color: #E6E2EE; }
+@media (max-width: 640px) { .page-head .hero__img { opacity: .55; } }
+
+/* ---------- Venue: building photo above a smaller map ---------- */
+.venue-media { display: flex; flex-direction: column; gap: 16px; }
+.venue-photo { margin: 0; }
+.venue-photo img { width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; object-position: 50% 85%; border-radius: 10px; background: var(--rule); }
+.venue-photo figcaption { margin-top: 8px; font-size: 14px; color: var(--muted); }
+.venue-media .map { min-height: 0; height: 240px; }
+@media (max-width: 900px) { .venue-media .map { height: 260px; } }

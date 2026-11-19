@@ -1,0 +1,79 @@
+/* Mobile program page (QR code). Builds on ../assets/style.css */
+body.day { font-size: 16px; padding-bottom: env(safe-area-inset-bottom); }
+
+.day-head {
+  background: var(--indigo); color: var(--white);
+  padding: calc(22px + env(safe-area-inset-top)) 20px 20px;
+}
+.day-head h1 { margin: 2px 0 8px; font-size: 30px; line-height: 1.05; letter-spacing: -0.03em; font-weight: 600; }
+.day-kicker { margin: 0; font-size: 14px; opacity: .85; }
+.day-where { margin: 0; font-size: 14px; line-height: 1.45; opacity: .9; }
+
+/* live "now / next" bar, sticks to the top while scrolling */
+.now {
+  position: sticky; top: 0; z-index: 5;
+  background: var(--white); border-bottom: 1px solid var(--rule);
+  box-shadow: 0 6px 16px -10px rgba(30, 21, 48, .35);
+  padding: 10px 20px;
+}
+.now[hidden] { display: none; }
+.now__row { font-size: 15px; line-height: 1.35; padding: 2px 0; }
+.now__row b { display: inline-block; min-width: 42px; color: var(--cyan); font-weight: 700; }
+.now__row--next b { color: var(--muted); }
+.now__time { color: var(--muted); font-size: 13px; white-space: nowrap; }
+.now__what { font-weight: 600; }
+
+.day-main { padding: 18px 20px 8px; max-width: 760px; margin: 0 auto; }
+
+/* compact timeline */
+.day .program { --t-col: 0px; --gap: 14px; }
+.day .slot, .day .session { grid-template-columns: 20px 1fr; }
+.day .program::before { left: 9px; }
+.day .slot { padding: 11px 0; }
+.day .slot time { grid-column: 2; grid-row: 1; font-size: 14px; padding-top: 0; margin-bottom: 3px; }
+.day .slot .node { grid-column: 1; grid-row: 1 / span 2; }
+.day .slot__body { grid-column: 2; }
+.day .slot:not(.slot--break) .node { grid-row: 2; }
+.day .slot:not(.slot--break):not(.slot--tba) .node::after { top: 16px; }
+.day .slot--break .node { grid-row: 2; }
+.day .slot--break time { padding-top: 0; }
+.day .slot__body > img, .day .slot__body > .initials { width: 44px; height: 44px; }
+.day .slot__body > .initials { font-size: 15px; }
+.day .speaker { font-size: 16px; }
+.day .speaker .aff { font-size: 13px; }
+.day .title { font-size: 16px; line-height: 1.35; }
+.day .session { margin: 22px 0 2px; }
+.day .session > span:first-child { display: none; }
+.day .session h3 { font-size: 19px; }
+.day .session h3 small { display: block; margin: 2px 0 0; font-size: 13px; }
+.day .session .chairs { font-size: 13px; }
+.day .slot--break .slot__body p { font-size: 15px; padding: 7px 12px; }
+
+/* talk in progress */
+.day .slot.is-now { background: #EFEAF7; border-radius: 10px; margin: 0 -10px; padding: 11px 10px; }
+.day .slot.is-now .node::after { background: var(--cyan); box-shadow: 0 0 0 4px #EFEAF7, 0 0 0 7px rgba(178, 60, 110, .25); }
+
+.day-foot { display: flex; flex-direction: column; gap: 10px; padding: 20px 20px 36px; max-width: 760px; margin: 0 auto; }
+.day-foot .btn { text-align: center; padding: 14px 18px; }
+.day-foot p { margin: 6px 0 0; text-align: center; font-size: 14px; }
+
+@media (min-width: 700px) {
+  .day-head { padding: 32px max(20px, calc(50% - 360px)); }
+  .day-head h1 { font-size: 40px; }
+  .now { padding: 10px max(20px, calc(50% - 360px)); }
+}
+
+/* PDF / print: one clean A4 document, no buttons or live bar */
+@media print {
+  @page { size: A4; margin: 14mm 14mm 16mm; }
+  body.day { background: #fff; font-size: 11pt; }
+  .now, .day-foot .btn, .day-foot { display: none !important; }
+  .day-head { background: none; color: var(--ink); padding: 0 0 10px; border-bottom: 2px solid var(--indigo); }
+  .day-head h1 { color: var(--indigo); font-size: 26pt; }
+  .day-main { padding: 8px 0 0; max-width: none; }
+  .day .slot, .day .session { break-inside: avoid; }
+  .day .slot { padding: 6px 0; }
+  .day .session { margin-top: 12px; }
+  .day .slot--break .slot__body p { background: #F1EDF6; }
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}
