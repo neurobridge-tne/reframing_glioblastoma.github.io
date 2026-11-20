@@ -50,8 +50,8 @@ body.day { font-size: 16px; padding-bottom: env(safe-area-inset-bottom); }
 .day .slot--break .slot__body p { font-size: 15px; padding: 7px 12px; }
 
 /* talk in progress */
-.day .slot.is-now { background: #EFEAF7; border-radius: 10px; margin: 0 -10px; padding: 11px 10px; }
-.day .slot.is-now .node::after { background: var(--cyan); box-shadow: 0 0 0 4px #EFEAF7, 0 0 0 7px rgba(178, 60, 110, .25); }
+.day .slot.is-now { background: #E4F1EA; border-radius: 10px; margin: 0 -10px; padding: 11px 10px; }
+.day .slot.is-now .node::after { background: var(--cyan); box-shadow: 0 0 0 4px #E4F1EA, 0 0 0 7px rgba(178, 60, 110, .25); }
 
 .day-foot { display: flex; flex-direction: column; gap: 10px; padding: 20px 20px 36px; max-width: 760px; margin: 0 auto; }
 .day-foot .btn { text-align: center; padding: 14px 18px; }
@@ -74,6 +74,6 @@ body.day { font-size: 16px; padding-bottom: env(safe-area-inset-bottom); }
   .day .slot, .day .session { break-inside: avoid; }
   .day .slot { padding: 6px 0; }
   .day .session { margin-top: 12px; }
-  .day .slot--break .slot__body p { background: #F1EDF6; }
+  .day .slot--break .slot__body p { background: #E6F0EA; }
   * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }

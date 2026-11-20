@@ -3,13 +3,13 @@
    Colors and fonts live here: change them once, everywhere updates.
    ========================================================= */
 :root {
-  /* palette taken from H&E staining */
-  --paper:  #F6F4F8;   /* page background */
+  /* palette: green from the fluorescence header */
+  --paper:  #F4F6F5;   /* page background */
   --white:  #FFFFFF;
-  --ink:    #1E1530;   /* main text */
-  --muted:  #635A78;   /* secondary text */
-  --rule:   #DED7E6;   /* lines */
-  --indigo: #4A2C86;   /* hematoxylin: titles, links, buttons */
+  --ink:    #10201A;   /* main text */
+  --muted:  #56645E;   /* secondary text */
+  --rule:   #D6DFDA;   /* lines */
+  --indigo: #1F7A55;   /* hematoxylin: titles, links, buttons */
   --cyan:   #B23C6E;   /* eosin: accents */
 
   --sans:  "Schibsted Grotesk", system-ui, sans-serif;
@@ -84,7 +84,7 @@ a:hover { color: var(--cyan); }
   position: absolute; z-index: 0; top: 4px; bottom: 4px; left: 0; width: 0;
   background: var(--indigo);
   border-radius: 8px;
-  box-shadow: 0 4px 14px -4px rgba(74, 44, 134, .55);
+  box-shadow: 0 4px 14px -4px rgba(31, 122, 85, .55);
   opacity: 0;
   transition: transform .45s cubic-bezier(.3, .8, .2, 1), width .45s cubic-bezier(.3, .8, .2, 1), opacity .25s;
   pointer-events: none;
@@ -221,8 +221,8 @@ h2 {
   content: ""; position: absolute; left: 4px; top: 6px; width: 12px; height: 12px; border-radius: 50%;
   background: var(--indigo); box-shadow: 0 0 0 4px var(--paper);
 }
-.slot--tba .node::after { background: var(--paper); border: 2px solid #B9ACD3; width: 8px; height: 8px; left: 4px; top: 6px; }
-.slot--break .node::after { background: #CFC3E2; width: 8px; height: 8px; left: 6px; top: 8px; }
+.slot--tba .node::after { background: var(--paper); border: 2px solid #9CC2AF; width: 8px; height: 8px; left: 4px; top: 6px; }
+.slot--break .node::after { background: #B9D6C7; width: 8px; height: 8px; left: 6px; top: 8px; }
 .slot--break[data-kind="poster"] .node::after { background: var(--cyan); }
 
 .slot__body { min-width: 0; }
@@ -241,7 +241,7 @@ h2 {
 .slot--break .node::after { top: 50%; transform: translateY(-50%); }
 .slot--break .slot__body p {
   margin: 0; padding: 8px 14px; border-radius: 8px;
-  background: #EEE8F6; color: var(--ink); font-size: 16px;
+  background: #E6F0EA; color: var(--ink); font-size: 16px;
 }
 .slot--break[data-kind="poster"] .slot__body p { background: #F7E4EC; }
 
@@ -305,9 +305,9 @@ h2 {
 .map { border: 0; width: 100%; height: 100%; min-height: 420px; border-radius: 10px; background: var(--rule); }
 
 /* ---------- Footer ---------- */
-footer { background: var(--ink); color: #C6CDD8; padding: 56px 0 40px; font-size: 15px; }
+footer { background: var(--ink); color: #C9D6CF; padding: 56px 0 40px; font-size: 15px; }
 footer a { color: var(--white); }
-footer a:hover { color: #9ED3E6; }
+footer a:hover { color: #8FE3B0; }
 .foot { display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: end; }
 .foot .sponsor { border-radius: 6px; max-width: 460px; }
 .foot p { margin: 0 0 6px; }
@@ -348,7 +348,7 @@ footer a:hover { color: #9ED3E6; }
 .tba { color: var(--muted); }
 .speakers .tba-photo {
   width: 112px; height: 112px; border-radius: 50%;
-  border: 1.5px dashed #BCB0CC; background: var(--white);
+  border: 1.5px dashed #A9C3B6; background: var(--white);
   grid-row: span 2;
 }
 @media (max-width: 640px) {
@@ -378,7 +378,7 @@ footer a:hover { color: #9ED3E6; }
   transition: border-color .15s, box-shadow .15s;
 }
 .field textarea { font-family: var(--serif); font-size: 18px; line-height: 1.55; min-height: 260px; resize: vertical; }
-.field input:focus, .field textarea:focus { outline: none; border-color: var(--indigo); box-shadow: 0 0 0 3px rgba(74, 44, 134, .15); }
+.field input:focus, .field textarea:focus { outline: none; border-color: var(--indigo); box-shadow: 0 0 0 3px rgba(31, 122, 85, .15); }
 .field [aria-invalid="true"] { border-color: var(--cyan); }
 .error { color: var(--cyan); font-size: 14px; font-weight: 500; min-height: 0; }
 .error:empty { display: none; }
@@ -394,7 +394,7 @@ footer a:hover { color: #9ED3E6; }
 }
 .choice span b { display: block; font-weight: 600; }
 .choice span small { color: var(--muted); font-size: 14px; }
-.choice input:checked + span { border-color: var(--indigo); background: #EFEAF7; box-shadow: inset 0 0 0 1px var(--indigo); }
+.choice input:checked + span { border-color: var(--indigo); background: #E4F1EA; box-shadow: inset 0 0 0 1px var(--indigo); }
 .choice input:focus-visible + span { outline: 2px solid var(--cyan); outline-offset: 2px; }
 
 .counter { font-size: 14px; color: var(--muted); font-variant-numeric: tabular-nums; align-self: flex-end; }
@@ -424,7 +424,7 @@ footer a:hover { color: #9ED3E6; }
 .initials {
   display: grid; place-items: center;
   width: 112px; height: 112px; border-radius: 50%;
-  background: #E9E2F3; color: var(--indigo);
+  background: #DCEDE4; color: var(--indigo);
   font-weight: 600; font-size: 34px; letter-spacing: -0.02em;
   grid-row: span 2;
 }
@@ -456,7 +456,7 @@ footer a:hover { color: #9ED3E6; }
 }
 .slot__body > img { object-fit: cover; background: var(--rule); }
 .slot__body > .initials { font-size: 18px; grid-row: auto; }
-.slot__body > .tba-photo { border: 1.5px dashed #BCB0CC; background: var(--white); box-sizing: border-box; width: 40px; height: 40px; margin: -6px 6px 0; }
+.slot__body > .tba-photo { border: 1.5px dashed #A9C3B6; background: var(--white); box-sizing: border-box; width: 40px; height: 40px; margin: -6px 6px 0; }
 .slot--tba .slot__body { align-items: center; }
 
 /* session chairs */
@@ -495,7 +495,7 @@ footer a:hover { color: #9ED3E6; }
   padding: 12px 14px; font-size: 16px; transition: border-color .15s, background .15s;
 }
 .check input { width: 18px; height: 18px; margin: 0; flex: none; accent-color: var(--indigo); }
-.check:has(input:checked) { border-color: var(--indigo); background: #EFEAF7; }
+.check:has(input:checked) { border-color: var(--indigo); background: #E4F1EA; }
 .check:has(input:focus-visible) { outline: 2px solid var(--cyan); outline-offset: 2px; }
 @media (max-width: 640px) { .checks { grid-template-columns: 1fr; } }
 .field[hidden] { display: none; }
@@ -536,7 +536,7 @@ footer a:hover { color: #9ED3E6; }
 
 /* ---------- Footer: patronage ---------- */
 .patronage { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
-.patronage p { margin: 0; font-size: 14px; color: #C6CDD8; }
+.patronage p { margin: 0; font-size: 14px; color: #C9D6CF; }
 .patronage img { height: 64px; width: auto; background: var(--white); padding: 10px 14px; border-radius: 8px; box-sizing: content-box; }
 
 /* ---------- Compact footer ---------- */
@@ -548,7 +548,7 @@ footer { padding: 28px 0; }
 .patronage img { height: 44px; padding: 6px 10px; border-radius: 6px; }
 @media (max-width: 900px) { .patronage { margin-top: 4px; } }
 .patronage a { display: inline-flex; border-radius: 6px; }
-.patronage a:hover img { box-shadow: 0 0 0 2px #9ED3E6; }
+.patronage a:hover img { box-shadow: 0 0 0 2px #8FE3B0; }
 
 /* hero facts: labels aligned on one line; readable over the micrograph */
 .facts { align-items: start; }
@@ -567,8 +567,8 @@ footer { padding: 28px 0; }
 }
 .hero h1 { color: #fff; }
 .hero h1 span { color: #8FE3B0; }
-.hero .sub { color: #E6E2EE; }
-.hero .facts dt { color: #A9A3B8; }
+.hero .sub { color: #E3EEE8; }
+.hero .facts dt { color: #A3B5AC; }
 .hero .facts dd { color: #fff; }
 .hero .facts dt, .hero .facts dd { text-shadow: 0 0 8px #05040A, 0 0 16px #05040A; }
 .hero .btn { background: #8FE3B0; color: #05040A; }
@@ -584,7 +584,7 @@ footer { padding: 28px 0; }
 /* same look for the registration page header */
 .page-head { background: #05040A; border-bottom: 0; }
 .page-head h1 { color: #fff; }
-.page-head p { color: #E6E2EE; }
+.page-head p { color: #E3EEE8; }
 @media (max-width: 640px) { .page-head .hero__img { opacity: .55; } }
 
 /* ---------- Venue: building photo above a smaller map ---------- */
@@ -594,3 +594,6 @@ footer { padding: 28px 0; }
 .venue-photo figcaption { margin-top: 8px; font-size: 14px; color: var(--muted); }
 .venue-media .map { min-height: 0; height: 240px; }
 @media (max-width: 900px) { .venue-media .map { height: 260px; } }
+
+/* ---------- Green theme: footer ---------- */
+footer { background: #0A1611; }
