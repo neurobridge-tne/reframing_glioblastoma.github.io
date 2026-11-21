@@ -6,7 +6,7 @@
 const ENDPOINT = "https://script.google.com/macros/s/AKfycbzBUDYA7tH6kMVxJnwS8lOMnXyMKr1i4kTwBvW6uFTcOOH1ZDho_2dYLBUdlweIZjyA_w/exec";
 
 // Set to false to suspend registration: the form is hidden and a notice is shown.
-const REGISTRATION_OPEN = true;
+const REGISTRATION_OPEN = false;
 
 const MAX_WORDS = 300;
 const MIN_WORDS = 20;             // set to 0 to accept any length
